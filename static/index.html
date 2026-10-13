@@ -9,120 +9,240 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: 'Poppins', sans-serif;
-    background: radial-gradient(circle at 50% 20%, #1c1f2e, #0a0b12 70%);
-    color: white;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow-y: auto;
-    padding: 20px 0;
+    background: linear-gradient(160deg, #232640, #171a2c 60%, #1c2033);
+    color: #f1f2f8; min-height: 100vh; overflow-x: hidden;
   }
-  .screen { text-align: center; display: none; width: 100%; max-width: 420px; padding: 20px; }
+  .wrap { display: flex; min-height: 100vh; }
+
+  #sidebar {
+    width: 260px; background: #1c1e30; border-right: 1px solid #2c2f47;
+    padding: 24px 18px; position: fixed; top: 0; left: -280px; bottom: 0;
+    transition: left 0.25s ease; z-index: 50; overflow-y: auto;
+  }
+  #sidebar.open { left: 0; }
+  #sidebar h3 { font-size: 13px; color: #9fa3c0; text-transform: uppercase; letter-spacing: 1px; margin: 18px 0 10px; }
+  #sidebar h3:first-child { margin-top: 0; }
+  .sidebar-btn {
+    display: block; width: 100%; text-align: left; background: #262944; border: 1px solid #343860;
+    color: white; padding: 11px 14px; border-radius: 10px; margin-bottom: 8px; font-size: 13.5px;
+    cursor: pointer; font-family: 'Poppins', sans-serif;
+  }
+  .sidebar-btn:hover { border-color: #8f7bff; }
+  select.sidebar-select, input.sidebar-input {
+    width: 100%; padding: 10px 12px; margin-bottom: 10px; border-radius: 8px;
+    border: 1px solid #343860; background: #262944; color: white; font-size: 13px;
+    font-family: 'Poppins', sans-serif;
+  }
+  #sidebarClose { position: absolute; top: 18px; right: 16px; background: none; border: none; color: #9fa3c0; font-size: 18px; cursor: pointer; }
+  #menuToggle {
+    position: fixed; top: 16px; left: 16px; z-index: 40; background: #262944; border: 1px solid #343860;
+    color: white; width: 40px; height: 40px; border-radius: 10px; font-size: 18px; cursor: pointer;
+  }
+  #sidebarMsg { font-size: 12px; color: #6ee7a0; min-height: 16px; margin-top: 4px; }
+
+  .main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; min-height: 100vh; }
+  .screen { text-align: center; display: none; width: 100%; max-width: 440px; }
   .screen.active { display: block; animation: fadeIn 0.4s ease; }
   @keyframes fadeIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
 
-  /* Incoming call */
+  #auth h2 { font-weight: 600; font-size: 24px; margin-bottom: 6px; }
+  #auth p.sub { color: #9fa3c0; font-size: 14px; margin-bottom: 28px; }
+  #auth input {
+    width: 100%; padding: 14px 16px; margin-bottom: 14px; border-radius: 12px;
+    border: 1px solid #343860; background: #1e2138; color: white;
+    font-family: 'Poppins', sans-serif; font-size: 14px; outline: none;
+  }
+  #auth input:focus { border-color: #8f7bff; }
+  #authError { color: #ff8a93; font-size: 13px; min-height: 18px; margin-bottom: 8px; }
+  #authSubmit {
+    width: 100%; padding: 14px; border-radius: 12px; border: none;
+    background: linear-gradient(135deg, #8f7bff, #b57bff); color: white;
+    font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; margin-top: 6px;
+  }
+  #authToggle { margin-top: 18px; font-size: 13px; color: #9fa3c0; }
+  #authToggle span { color: #b58bff; cursor: pointer; font-weight: 500; }
+
+  #modeSelect h2 { font-size: 22px; margin-bottom: 20px; }
+  .mode-card {
+    background: #1e2138; border: 1px solid #343860; border-radius: 14px;
+    padding: 18px; margin-bottom: 14px; cursor: pointer; text-align: left;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .mode-card:hover { border-color: #8f7bff; }
+  .mode-card img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+  .mode-card b { font-size: 15px; }
+  .mode-card p { color: #9fa3c0; font-size: 13px; margin-top: 4px; }
+  #interviewOptions { display: none; text-align: left; margin-top: 10px; }
+  #interviewOptions.show { display: block; }
+
+  /* Friend incoming/call screen */
   #incoming .avatar-wrap { position: relative; width: 140px; height: 140px; margin: 0 auto 24px; }
-  #incoming .ring {
-    position: absolute; inset: 0; border-radius: 50%;
-    border: 2px solid rgba(124,109,255,0.5);
-    animation: pulse-ring 1.8s ease-out infinite;
-  }
+  #incoming .ring { position: absolute; inset: 0; border-radius: 50%; border: 2px solid rgba(143,123,255,0.5); animation: pulse-ring 1.8s ease-out infinite; }
   #incoming .ring:nth-child(2) { animation-delay: 0.6s; }
-  @keyframes pulse-ring {
-    0% { transform: scale(0.9); opacity: 1; }
-    100% { transform: scale(1.5); opacity: 0; }
-  }
+  @keyframes pulse-ring { 0% { transform: scale(0.9); opacity: 1; } 100% { transform: scale(1.5); opacity: 0; } }
   #incoming .avatar {
-    position: absolute; inset: 10px; border-radius: 50%;
-    background: linear-gradient(135deg, #7c6dff, #a26bff);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 52px;
-    box-shadow: 0 8px 30px rgba(124,109,255,0.4);
+    position: absolute; inset: 8px; border-radius: 50%; overflow: hidden;
+    box-shadow: 0 8px 30px rgba(143,123,255,0.4); border: 2px solid #343860;
   }
+  #incoming .avatar img { width: 100%; height: 100%; object-fit: cover; }
   #incoming h2 { font-weight: 600; font-size: 22px; margin-bottom: 4px; }
-  #incoming p { color: #8b8fa3; font-size: 14px; letter-spacing: 0.3px; }
-  .call-buttons { display: flex; justify-content: center; gap: 70px; margin-top: 48px; }
-  .call-buttons button {
-    width: 62px; height: 62px; border-radius: 50%; border: none;
-    font-size: 24px; cursor: pointer; color: white;
-    transition: transform 0.15s ease;
+  #incoming p { color: #9fa3c0; font-size: 14px; letter-spacing: 0.3px; }
+  #logoutLink {
+    position: fixed; top: 16px; right: 16px; font-size: 12px; color: #9fa3c0;
+    cursor: pointer; text-decoration: underline; display: none; z-index: 40;
   }
+  .call-buttons { display: flex; justify-content: center; gap: 70px; margin-top: 48px; }
+  .call-buttons button { width: 62px; height: 62px; border-radius: 50%; border: none; font-size: 24px; cursor: pointer; color: white; transition: transform 0.15s ease; }
   .call-buttons button:active { transform: scale(0.9); }
   #decline { background: linear-gradient(135deg, #ff5f6d, #d0333f); }
   #accept { background: linear-gradient(135deg, #4ade80, #22a55a); }
 
-  /* In-call */
-  #inCall .top { color: #8b8fa3; font-size: 13px; letter-spacing: 1px; margin-bottom: 4px; text-transform: uppercase; }
-  #timer { font-size: 15px; color: #b8bccb; margin-bottom: 24px; font-variant-numeric: tabular-nums; }
+  #inCall .top { color: #9fa3c0; font-size: 13px; letter-spacing: 1px; margin-bottom: 4px; text-transform: uppercase; }
+  #timer { font-size: 15px; color: #c3c6de; margin-bottom: 18px; font-variant-numeric: tabular-nums; }
   .orb-wrap { width: 150px; height: 150px; margin: 0 auto 16px; position: relative; }
-  .orb {
-    width: 100%; height: 100%; border-radius: 50%;
-    background: linear-gradient(135deg, #7c6dff, #ff6bcb);
-    box-shadow: 0 0 40px rgba(124,109,255,0.35);
-    transition: transform 0.2s ease;
-  }
+  .orb { width: 100%; height: 100%; border-radius: 50%; background: linear-gradient(135deg, #8f7bff, #ff8bd8); box-shadow: 0 0 40px rgba(143,123,255,0.35); transition: transform 0.2s ease; }
   .orb.speaking { animation: pulse 0.7s ease-in-out infinite alternate; }
   @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.12); } }
-  #status { color: #8b8fa3; font-size: 14px; margin-bottom: 18px; min-height: 20px; }
-  #transcript {
-    text-align: left; max-height: 230px; overflow-y: auto; margin: 0 0 24px;
-    padding: 4px 6px;
+
+  /* Interview room — distinct layout */
+  #interviewCard {
+    display: none; background: #1e2138; border: 1px solid #343860; border-radius: 16px;
+    padding: 18px; margin-bottom: 18px; text-align: left; align-items: center; gap: 14px;
   }
+  #interviewCard.show { display: flex; }
+  #interviewCard img {
+    width: 64px; height: 64px; border-radius: 12px; object-fit: cover; flex-shrink: 0;
+    border: 2px solid #343860;
+  }
+  #interviewCard .avatar-dot {
+    position: relative;
+  }
+  #interviewCard .avatar-dot .live-dot {
+    position: absolute; bottom: 2px; right: 2px; width: 12px; height: 12px; border-radius: 50%;
+    background: #4ade80; border: 2px solid #1e2138;
+  }
+  #interviewCard .info b { font-size: 15px; }
+  #interviewCard .info div.role { color: #9fa3c0; font-size: 12.5px; margin-top: 2px; }
+  #questionCounter {
+    margin-left: auto; background: #262944; border: 1px solid #343860; border-radius: 20px;
+    padding: 6px 12px; font-size: 12px; color: #c3c6de; white-space: nowrap;
+  }
+
+  #status { color: #9fa3c0; font-size: 14px; margin-bottom: 18px; min-height: 20px; }
+  #banner { display: none; background: rgba(255,95,109,0.14); border: 1px solid #ff5f6d; color: #ffb0b7; font-size: 12.5px; padding: 8px 12px; border-radius: 8px; margin-bottom: 14px; text-align: left; }
+  #transcript { text-align: left; max-height: 220px; overflow-y: auto; margin: 0 0 20px; padding: 4px 6px; }
   #transcript p { margin: 10px 0; line-height: 1.45; font-size: 14.5px; }
   #transcript .you { color: #7dd3fc; }
   #transcript .ai { color: #d8b4fe; }
-  #transcript .correction {
-    color: #fbbf24; font-size: 13px; background: rgba(251,191,36,0.08);
-    padding: 8px 10px; border-radius: 8px; border-left: 2px solid #fbbf24;
-  }
+  #transcript .correction { color: #fbbf24; font-size: 13px; background: rgba(251,191,36,0.08); padding: 8px 10px; border-radius: 8px; border-left: 2px solid #fbbf24; }
+
+  .call-actions { display: flex; gap: 10px; justify-content: center; margin-top: 8px; }
   #talkBtn {
-    font-size: 15px; font-weight: 500; padding: 14px 36px; border-radius: 30px;
-    border: none; background: linear-gradient(135deg, #7c6dff, #a26bff);
-    color: white; cursor: pointer; box-shadow: 0 6px 20px rgba(124,109,255,0.35);
-    transition: transform 0.15s ease;
+    font-size: 15px; font-weight: 500; padding: 14px 36px; border-radius: 30px; border: none;
+    background: linear-gradient(135deg, #8f7bff, #b57bff); color: white; cursor: pointer;
+    box-shadow: 0 6px 20px rgba(143,123,255,0.35); transition: transform 0.15s ease;
   }
   #talkBtn:active { transform: scale(0.96); }
-  #talkBtn:disabled { background: #2a2d3d; box-shadow: none; cursor: default; }
-  #hangup {
-    display: block; margin: 18px auto 0; background: none; border: none;
-    color: #ff5f6d; cursor: pointer; font-size: 13px; letter-spacing: 0.3px;
+  #talkBtn:disabled { background: #2a2d47; box-shadow: none; cursor: default; }
+  #skipBtn {
+    font-size: 13px; padding: 14px 18px; border-radius: 30px; border: 1px solid #343860;
+    background: #1e2138; color: #c3c6de; cursor: pointer; display: none;
   }
+  #skipBtn.show { display: inline-block; }
+  #hangup { display: block; margin: 18px auto 0; background: none; border: none; color: #ff8a93; cursor: pointer; font-size: 13px; letter-spacing: 0.3px; }
 
-  /* Report screen */
   #report h2 { font-size: 20px; }
-  #reportBody .row {
-    display: flex; justify-content: space-between; padding: 8px 0;
-    border-bottom: 1px solid #2a2d3d; font-size: 14px;
-  }
-  #reportBody .row span:first-child { color: #8b8fa3; }
-  #reportBody .overall {
-    display: flex; justify-content: space-between; padding: 14px 0;
-    font-weight: 600; font-size: 16px;
-  }
+  #reportBody .row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #343860; font-size: 14px; }
+  #reportBody .row span:first-child { color: #9fa3c0; }
+  #reportBody .overall { display: flex; justify-content: space-between; padding: 14px 0; font-weight: 600; font-size: 16px; }
   #reportBody h3 { font-size: 14px; font-weight: 500; margin: 18px 0 6px; }
   #reportBody ul { padding-left: 18px; font-size: 13.5px; color: #d1d5db; }
   #reportBody li { margin: 4px 0; }
-  #reportBody .strengths { color: #4ade80; font-size: 13.5px; margin-top: 4px; }
+  #reportBody .strengths { color: #6ee7a0; font-size: 13.5px; margin-top: 4px; }
   #reportBody .improvements { color: #fbbf24; font-size: 13.5px; margin-top: 4px; }
-  #newCall {
-    margin-top: 24px; background: linear-gradient(135deg,#7c6dff,#a26bff);
-    border: none; color: white; padding: 12px 28px; border-radius: 24px;
-    cursor: pointer; font-family: 'Poppins', sans-serif; font-size: 14px;
+  #reportBody .nlpbox { background: #1e2138; border: 1px solid #343860; border-radius: 10px; padding: 12px; margin-top: 14px; font-size: 13px; text-align: left; }
+  #reportBody .nlpbox div { display: flex; justify-content: space-between; padding: 4px 0; color: #c7c9d9; }
+  .report-actions { display: flex; gap: 10px; margin-top: 20px; }
+  .report-actions button {
+    flex: 1; background: linear-gradient(135deg,#8f7bff,#b57bff); border: none; color: white;
+    padding: 12px; border-radius: 20px; cursor: pointer; font-family: 'Poppins', sans-serif; font-size: 13.5px;
   }
+  .report-actions button.secondary { background: #1e2138; border: 1px solid #343860; }
 </style>
 </head>
 <body>
 
-<div id="incoming" class="screen active">
-  <div class="avatar-wrap">
-    <div class="ring"></div>
-    <div class="ring"></div>
-    <div class="avatar">🤖</div>
+<button id="menuToggle">☰</button>
+<div id="logoutLink">Log out</div>
+
+<div id="sidebar">
+  <button id="sidebarClose">✕</button>
+  <h3>Session</h3>
+  <button class="sidebar-btn" id="saveBtn">💾 Save conversation & scorecard</button>
+  <button class="sidebar-btn" id="exportBtn">📄 Export PDF</button>
+  <div id="sidebarMsg"></div>
+
+  <h3>Interview type</h3>
+  <select class="sidebar-select" id="sideInterviewType">
+    <option value="formal">Formal</option>
+    <option value="informal">Informal</option>
+    <option value="communication">Communication-focused</option>
+    <option value="technical">Technical</option>
+  </select>
+  <input class="sidebar-input" id="sideRole" placeholder="Target role (e.g. Software Engineer)">
+  <button class="sidebar-btn" id="applyInterviewBtn">Apply & switch to Interviewer</button>
+
+  <h3>Mode</h3>
+  <button class="sidebar-btn" id="switchFriendBtn">🧑‍🤝‍🧑 Friend mode</button>
+</div>
+
+<div class="main">
+
+<div id="auth" class="screen active">
+  <h2 id="authTitle">Welcome back</h2>
+  <p class="sub" id="authSub">Log in to continue practicing</p>
+  <input type="email" id="authEmail" placeholder="Email">
+  <input type="password" id="authPassword" placeholder="Password">
+  <div id="authError"></div>
+  <button id="authSubmit">Log in</button>
+  <div id="authToggle">New here? <span id="authToggleLink">Create an account</span></div>
+</div>
+
+<div id="modeSelect" class="screen">
+  <h2>Choose your session</h2>
+  <div class="mode-card" id="pickFriend">
+    <img src="https://i.pravatar.cc/100?img=47" alt="">
+    <div>
+      <b>🧑‍🤝‍🧑 Friend — Speaking Practice</b>
+      <p>Casual conversation with live grammar corrections</p>
+    </div>
   </div>
-  <h2>English Buddy</h2>
-  <p>Incoming call…</p>
+  <div class="mode-card" id="pickInterviewer">
+    <img src="https://i.pravatar.cc/100?img=33" alt="">
+    <div style="flex:1">
+      <b>🎤 Interviewer — Mock Interview</b>
+      <p>Realistic interview Q&A, feedback given at the end</p>
+      <div id="interviewOptions">
+        <select class="sidebar-select" id="mInterviewType" style="margin-top:12px;">
+          <option value="formal">Formal</option>
+          <option value="informal">Informal</option>
+          <option value="communication">Communication-focused</option>
+          <option value="technical">Technical</option>
+        </select>
+        <input class="sidebar-input" id="mRole" placeholder="Target role (e.g. Software Engineer)">
+        <button class="sidebar-btn" id="startInterviewBtn" style="background:linear-gradient(135deg,#8f7bff,#b57bff); border:none;">Start interview</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="incoming" class="screen">
+  <div class="avatar-wrap">
+    <div class="ring"></div><div class="ring"></div>
+    <div class="avatar"><img id="incomingAvatar" src="https://i.pravatar.cc/200?img=47" alt=""></div>
+  </div>
+  <h2 id="incomingTitle">English Buddy</h2>
+  <p id="incomingSub">Incoming call…</p>
   <div class="call-buttons">
     <button id="decline">✕</button>
     <button id="accept">📞</button>
@@ -130,123 +250,316 @@
 </div>
 
 <div id="inCall" class="screen">
-  <div class="top">English Buddy</div>
+  <div class="top" id="inCallTop">English Buddy</div>
   <div id="timer">00:00</div>
-  <div class="orb-wrap"><div class="orb" id="orb"></div></div>
+
+  <!-- Friend mode: orb -->
+  <div class="orb-wrap" id="orbWrap"><div class="orb" id="orb"></div></div>
+
+  <!-- Interview mode: interviewer card -->
+  <div id="interviewCard">
+    <div class="avatar-dot">
+      <img id="interviewerPhoto" src="https://i.pravatar.cc/120?img=33" alt="">
+      <div class="live-dot"></div>
+    </div>
+    <div class="info">
+      <b id="interviewerName">Mock Interviewer</b>
+      <div class="role" id="interviewerRole">Role: —</div>
+    </div>
+    <div id="questionCounter">Q1</div>
+  </div>
+
+  <div id="banner"></div>
   <div id="status">Press "Talk" and speak</div>
   <div id="transcript"></div>
-  <button id="talkBtn">🎤 Talk</button>
-  <button id="hangup">End call</button>
+  <div class="call-actions">
+    <button id="talkBtn">🎤 Talk</button>
+    <button id="skipBtn">⏭ Skip question</button>
+  </div>
+  <button id="hangup">End session</button>
 </div>
 
 <div id="report" class="screen">
   <h2>Session report</h2>
   <div id="reportBody"></div>
-  <button id="newCall">New call</button>
+  <div class="report-actions">
+    <button id="saveFromReport">💾 Save</button>
+    <button id="exportFromReport" class="secondary">📄 Export PDF</button>
+  </div>
+  <button id="newCall" style="margin-top:14px; width:100%; background:#1e2138; border:1px solid #343860; color:white; padding:12px; border-radius:20px; cursor:pointer; font-family:'Poppins',sans-serif; font-size:14px;">New session</button>
+</div>
+
 </div>
 
 <script>
+const sidebar = document.getElementById("sidebar");
+const menuToggle = document.getElementById("menuToggle");
+const authScreen = document.getElementById("auth");
+const modeSelect = document.getElementById("modeSelect");
 const incoming = document.getElementById("incoming");
 const inCall = document.getElementById("inCall");
 const reportScreen = document.getElementById("report");
+const logoutLink = document.getElementById("logoutLink");
 const orb = document.getElementById("orb");
+const orbWrap = document.getElementById("orbWrap");
+const interviewCard = document.getElementById("interviewCard");
+const questionCounter = document.getElementById("questionCounter");
+const skipBtn = document.getElementById("skipBtn");
 const status = document.getElementById("status");
+const banner = document.getElementById("banner");
 const transcript = document.getElementById("transcript");
 const talkBtn = document.getElementById("talkBtn");
 const timerEl = document.getElementById("timer");
 const reportBody = document.getElementById("reportBody");
 
 let seconds = 0, timerInterval;
+let authMode = "login";
+let busy = false;
+let activeMode = "friend";
+let questionCount = 0;
+
+function showScreen(el) {
+  [authScreen, modeSelect, incoming, inCall, reportScreen].forEach(s => s.classList.remove("active"));
+  el.classList.add("active");
+}
+function showBanner(msg) { banner.textContent = msg; banner.style.display = "block"; }
+function clearBanner() { banner.style.display = "none"; }
+function resetTalkUI() { orb.classList.remove("speaking"); status.textContent = 'Press "Talk" and speak'; talkBtn.disabled = false; busy = false; }
+
+menuToggle.addEventListener("click", () => sidebar.classList.add("open"));
+document.getElementById("sidebarClose").addEventListener("click", () => sidebar.classList.remove("open"));
+
+document.getElementById("pickInterviewer").addEventListener("click", () => {
+  document.getElementById("interviewOptions").classList.add("show");
+});
+
+document.getElementById("pickFriend").addEventListener("click", async () => {
+  await fetch("/start", { method:"POST", credentials:"include", headers:{"Content-Type":"application/json"}, body: JSON.stringify({mode:"friend"}) });
+  activeMode = "friend";
+  document.getElementById("incomingTitle").textContent = "English Buddy";
+  document.getElementById("incomingSub").textContent = "Incoming call…";
+  document.getElementById("incomingAvatar").src = "https://i.pravatar.cc/200?img=47";
+  document.getElementById("inCallTop").textContent = "English Buddy";
+  showScreen(incoming);
+});
+
+document.getElementById("startInterviewBtn").addEventListener("click", async (e) => {
+  e.stopPropagation();
+  const type = document.getElementById("mInterviewType").value;
+  const role = document.getElementById("mRole").value.trim() || "the position";
+  await fetch("/start", { method:"POST", credentials:"include", headers:{"Content-Type":"application/json"}, body: JSON.stringify({mode:"interviewer", interview_type:type, role:role}) });
+  setupInterviewer(type, role);
+  showScreen(incoming);
+});
+
+document.getElementById("applyInterviewBtn").addEventListener("click", async () => {
+  const type = document.getElementById("sideInterviewType").value;
+  const role = document.getElementById("sideRole").value.trim() || "the position";
+  await fetch("/start", { method:"POST", credentials:"include", headers:{"Content-Type":"application/json"}, body: JSON.stringify({mode:"interviewer", interview_type:type, role:role}) });
+  setupInterviewer(type, role);
+  sidebar.classList.remove("open");
+  showScreen(incoming);
+});
+
+function setupInterviewer(type, role) {
+  activeMode = "interviewer";
+  document.getElementById("incomingTitle").textContent = "Mock Interview";
+  document.getElementById("incomingSub").textContent = `${type} interview — ${role}`;
+  document.getElementById("incomingAvatar").src = "https://i.pravatar.cc/200?img=33";
+  document.getElementById("inCallTop").textContent = "Mock Interview";
+  document.getElementById("interviewerRole").textContent = `${type.charAt(0).toUpperCase()+type.slice(1)} interview — ${role}`;
+}
+
+document.getElementById("switchFriendBtn").addEventListener("click", async () => {
+  await fetch("/start", { method:"POST", credentials:"include", headers:{"Content-Type":"application/json"}, body: JSON.stringify({mode:"friend"}) });
+  activeMode = "friend";
+  document.getElementById("incomingTitle").textContent = "English Buddy";
+  document.getElementById("incomingSub").textContent = "Incoming call…";
+  document.getElementById("incomingAvatar").src = "https://i.pravatar.cc/200?img=47";
+  document.getElementById("inCallTop").textContent = "English Buddy";
+  sidebar.classList.remove("open");
+  showScreen(incoming);
+});
+
+async function doSave(msgEl) {
+  try {
+    const res = await fetch("/report", { credentials: "include" });
+    if (!res.ok) throw new Error();
+    msgEl.textContent = "Saved ✓";
+    setTimeout(() => msgEl.textContent = "", 2500);
+  } catch (e) { msgEl.textContent = "Save failed"; }
+}
+document.getElementById("saveBtn").addEventListener("click", () => doSave(document.getElementById("sidebarMsg")));
+document.getElementById("exportBtn").addEventListener("click", () => window.open("/export-pdf", "_blank"));
+document.getElementById("saveFromReport").addEventListener("click", () => doSave(document.createElement("div")));
+document.getElementById("exportFromReport").addEventListener("click", () => window.open("/export-pdf", "_blank"));
+
+async function checkLoggedIn() {
+  try {
+    const res = await fetch("/me", { credentials: "include" });
+    const data = await res.json();
+    if (data.logged_in) { logoutLink.style.display = "block"; showScreen(modeSelect); }
+    else { logoutLink.style.display = "none"; showScreen(authScreen); }
+  } catch (e) { showScreen(authScreen); }
+}
+
+document.getElementById("authToggleLink").addEventListener("click", () => {
+  authMode = authMode === "login" ? "signup" : "login";
+  document.getElementById("authTitle").textContent = authMode === "login" ? "Welcome back" : "Create your account";
+  document.getElementById("authSub").textContent = authMode === "login" ? "Log in to continue practicing" : "Sign up to get your own speaking partner";
+  document.getElementById("authSubmit").textContent = authMode === "login" ? "Log in" : "Sign up";
+  document.getElementById("authToggleLink").textContent = authMode === "login" ? "Create an account" : "Log in instead";
+  document.querySelector("#authToggle").firstChild.textContent = authMode === "login" ? "New here? " : "Already have an account? ";
+  document.getElementById("authError").textContent = "";
+});
+
+document.getElementById("authSubmit").addEventListener("click", async () => {
+  const email = document.getElementById("authEmail").value.trim();
+  const password = document.getElementById("authPassword").value;
+  const errorEl = document.getElementById("authError");
+  errorEl.textContent = "";
+  if (!email || !password) { errorEl.textContent = "Please fill in both fields."; return; }
+  const endpoint = authMode === "login" ? "/login" : "/signup";
+  try {
+    const res = await fetch(endpoint, { method:"POST", credentials:"include", headers:{"Content-Type":"application/json"}, body: JSON.stringify({email,password}) });
+    const data = await res.json();
+    if (!res.ok) { errorEl.textContent = data.detail || "Something went wrong."; return; }
+    logoutLink.style.display = "block";
+    showScreen(modeSelect);
+  } catch (err) { errorEl.textContent = "Could not reach the server."; }
+});
+
+logoutLink.addEventListener("click", async () => {
+  try { await fetch("/logout", { method: "POST", credentials: "include" }); } catch (e) {}
+  logoutLink.style.display = "none";
+  showScreen(authScreen);
+});
+
+checkLoggedIn();
 
 document.getElementById("accept").addEventListener("click", startCall);
-document.getElementById("decline").addEventListener("click", () => {
-  incoming.classList.remove("active");
-});
+document.getElementById("decline").addEventListener("click", () => showScreen(modeSelect));
 document.getElementById("hangup").addEventListener("click", showReport);
-document.getElementById("newCall").addEventListener("click", () => location.reload());
+document.getElementById("newCall").addEventListener("click", () => showScreen(modeSelect));
 
 function startCall() {
-  incoming.classList.remove("active");
-  inCall.classList.add("active");
+  showScreen(inCall);
+  seconds = 0; timerEl.textContent = "00:00"; transcript.innerHTML = ""; questionCount = 0;
+  clearBanner(); resetTalkUI(); clearInterval(timerInterval);
+
+  if (activeMode === "interviewer") {
+    orbWrap.style.display = "none";
+    interviewCard.classList.add("show");
+    skipBtn.classList.add("show");
+    questionCounter.textContent = "Q1";
+  } else {
+    orbWrap.style.display = "block";
+    interviewCard.classList.remove("show");
+    skipBtn.classList.remove("show");
+  }
+
   timerInterval = setInterval(() => {
     seconds++;
-    const m = String(Math.floor(seconds / 60)).padStart(2, "0");
-    const s = String(seconds % 60).padStart(2, "0");
+    const m = String(Math.floor(seconds/60)).padStart(2,"0");
+    const s = String(seconds%60).padStart(2,"0");
     timerEl.textContent = `${m}:${s}`;
   }, 1000);
 }
 
 const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-const recognition = new Recognition();
-recognition.lang = "en-US";
-recognition.interimResults = false;
+let recognition = null;
+if (Recognition) { recognition = new Recognition(); recognition.lang = "en-US"; recognition.interimResults = false; }
+else { showBanner("Your browser doesn't support speech recognition. Please use Chrome."); }
 
 talkBtn.addEventListener("click", () => {
-  talkBtn.disabled = true;
-  status.textContent = "Listening…";
-  recognition.start();
+  if (busy || !recognition) return;
+  clearBanner(); busy = true; talkBtn.disabled = true; status.textContent = "Listening…";
+  try { recognition.start(); } catch (e) { resetTalkUI(); showBanner("Mic didn't start — tap Talk again."); }
 });
 
-recognition.onresult = async (event) => {
-  const said = event.results[0][0].transcript;
+skipBtn.addEventListener("click", async () => {
+  if (busy) return;
+  busy = true; skipBtn.disabled = true;
   status.textContent = "Thinking…";
-  addLine("you", "You: " + said);
+  addLine("you", "You: (skipped this question)");
+  try {
+    const res = await fetch("/chat", { method:"POST", credentials:"include", headers:{"Content-Type":"application/json"}, body: JSON.stringify({text:"i would like to skip this question, please ask the next one"}) });
+    const data = await res.json();
+    addLine("ai", "AI: " + data.reply);
+    questionCount++; questionCounter.textContent = "Q" + (questionCount+1);
+    await speak(data.reply);
+  } catch (e) { showBanner("Couldn't skip — try again."); resetTalkUI(); }
+  skipBtn.disabled = false;
+});
 
-    const res = await fetch("/chat", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ text: said }),
-  });
-  const data = await res.json();
-
-  const lines = data.reply.split("Correction:");
-  addLine("ai", "AI: " + lines[0].trim());
-  if (lines[1]) addLine("correction", "✏ " + lines[1].trim());
-
-  speak(lines[0].trim());
-};
-
-recognition.onerror = (e) => {
-  status.textContent = "Error: " + e.error;
-  talkBtn.disabled = false;
-};
+if (recognition) {
+  recognition.onresult = async (event) => {
+    const said = event.results[0][0].transcript;
+    status.textContent = "Thinking…";
+    addLine("you", "You: " + said);
+    try {
+      const res = await fetch("/chat", { method:"POST", credentials:"include", headers:{"Content-Type":"application/json"}, body: JSON.stringify({text:said}) });
+      if (!res.ok) throw new Error("chat_failed");
+      const data = await res.json();
+      const lines = data.reply.split("Correction:");
+      addLine("ai", "AI: " + lines[0].trim());
+      if (lines[1]) addLine("correction", "✏ " + lines[1].trim());
+      if (activeMode === "interviewer") { questionCount++; questionCounter.textContent = "Q" + (questionCount+1); }
+      await speak(lines[0].trim());
+    } catch (err) {
+      showBanner("Couldn't get a reply. Check your connection and tap Talk to try again.");
+      resetTalkUI();
+    }
+  };
+  recognition.onerror = (e) => { showBanner("Didn't catch that (" + e.error + "). Tap Talk to try again."); resetTalkUI(); };
+  recognition.onend = () => { if (status.textContent === "Listening…") resetTalkUI(); };
+}
 
 function addLine(cls, text) {
-  const p = document.createElement("p");
-  p.className = cls;
-  p.textContent = text;
-  transcript.appendChild(p);
-  transcript.scrollTop = transcript.scrollHeight;
+  const p = document.createElement("p"); p.className = cls; p.textContent = text;
+  transcript.appendChild(p); transcript.scrollTop = transcript.scrollHeight;
 }
 
 function speak(text) {
-  const clean = text.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, "");
-  orb.classList.add("speaking");
-  status.textContent = "Speaking…";
-  const utterance = new SpeechSynthesisUtterance(clean);
-  utterance.lang = "en-US";
-  utterance.onend = () => {
-    orb.classList.remove("speaking");
-    status.textContent = 'Press "Talk" and speak';
-    talkBtn.disabled = false;
-  };
-  speechSynthesis.speak(utterance);
+  return new Promise((resolve) => {
+    const clean = text.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, "");
+    orb.classList.add("speaking"); status.textContent = "Speaking…";
+    const fallbackToBrowserVoice = () => {
+      try {
+        const utterance = new SpeechSynthesisUtterance(clean);
+        utterance.lang = "en-US";
+        utterance.onend = () => { resetTalkUI(); resolve(); };
+        utterance.onerror = () => { resetTalkUI(); resolve(); };
+        speechSynthesis.speak(utterance);
+      } catch (e) { resetTalkUI(); resolve(); }
+    };
+    const safety = setTimeout(() => { resetTalkUI(); resolve(); }, 8000);
+    fetch("/speak", { method:"POST", credentials:"include", headers:{"Content-Type":"application/json"}, body: JSON.stringify({text:clean}) })
+      .then(async (res) => {
+        if (!res.ok) throw new Error("tts_failed");
+        const blob = await res.blob();
+        if (!blob || blob.size < 100) throw new Error("empty_audio");
+        const url = URL.createObjectURL(blob);
+        const audio = new Audio(url);
+        audio.onended = () => { clearTimeout(safety); resetTalkUI(); resolve(); };
+        audio.onerror = () => { clearTimeout(safety); fallbackToBrowserVoice(); };
+        audio.play().catch(() => { clearTimeout(safety); fallbackToBrowserVoice(); });
+      })
+      .catch(() => { clearTimeout(safety); fallbackToBrowserVoice(); });
+  });
 }
 
 async function showReport() {
   clearInterval(timerInterval);
-  inCall.classList.remove("active");
-  reportScreen.classList.add("active");
   reportBody.innerHTML = "Analyzing your session…";
-
+  showScreen(reportScreen);
   try {
-        const res = await fetch("/report");
+    const res = await fetch("/report", { credentials: "include" });
+    if (!res.ok) throw new Error("report_failed");
     const data = await res.json();
     const r = JSON.parse(data.raw);
-
-    const row = (label, val) =>
-      `<div class="row"><span>${label}</span><span>${val}/10</span></div>`;
-
+    const row = (label, val) => `<div class="row"><span>${label}</span><span>${val}/10</span></div>`;
+    const n = r.nlp_metrics || {};
     reportBody.innerHTML = `
       ${row("Grammar", r.grammar)}
       ${row("Vocabulary", r.vocabulary)}
@@ -255,7 +568,14 @@ async function showReport() {
       ${row("Clarity", r.clarity)}
       ${row("Keyword usage", r.keyword_usage)}
       <div class="overall"><span>Overall</span><span>${r.overall}/10</span></div>
-      <p style="color:#8b8fa3; font-size:13px;">Tone: ${r.sentiment}</p>
+      <p style="color:#9fa3c0; font-size:13px;">Tone: ${r.sentiment}</p>
+      <div class="nlpbox">
+        <div><span>Vocabulary Diversity (TTR)</span><span>${n.type_token_ratio}</span></div>
+        <div><span>Flesch Reading Ease</span><span>${n.flesch_reading_ease}</span></div>
+        <div><span>Avg Sentence Length</span><span>${n.avg_sentence_length} words</span></div>
+        <div><span>Total Words</span><span>${n.total_words}</span></div>
+        <div><span>Unique Words</span><span>${n.unique_words}</span></div>
+      </div>
       <h3>Mistakes</h3>
       <ul>${r.grammar_mistakes.map(m => `<li>${m}</li>`).join("") || "<li>None</li>"}</ul>
       <h3>Strengths</h3>
@@ -264,7 +584,7 @@ async function showReport() {
       <div class="improvements">${r.improvements.map(s => "⚠ " + s).join("<br>")}</div>
     `;
   } catch (err) {
-    reportBody.innerHTML = "Couldn't generate the report. Check the server terminal for an error.";
+    reportBody.innerHTML = "Couldn't generate the report. Try again, or check your connection.";
   }
 }
 </script>

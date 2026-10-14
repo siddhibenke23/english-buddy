@@ -69,13 +69,17 @@
     display: flex; gap: 14px; align-items: flex-start;
   }
   .mode-card:hover { border-color: #8f7bff; }
-  .mode-card img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
   .mode-card b { font-size: 15px; }
   .mode-card p { color: #9fa3c0; font-size: 13px; margin-top: 4px; }
+  .avatar-badge { position: relative; display: inline-block; flex-shrink: 0; }
+  .avatar-badge .badge-icon {
+    position: absolute; bottom: -2px; right: -2px; background: #1e2138;
+    border: 2px solid #343860; border-radius: 50%; width: 22px; height: 22px;
+    display: flex; align-items: center; justify-content: center; font-size: 11px;
+  }
   #interviewOptions { display: none; text-align: left; margin-top: 10px; }
   #interviewOptions.show { display: block; }
 
-  /* Friend incoming/call screen */
   #incoming .avatar-wrap { position: relative; width: 140px; height: 140px; margin: 0 auto 24px; }
   #incoming .ring { position: absolute; inset: 0; border-radius: 50%; border: 2px solid rgba(143,123,255,0.5); animation: pulse-ring 1.8s ease-out infinite; }
   #incoming .ring:nth-child(2) { animation-delay: 0.6s; }
@@ -85,6 +89,11 @@
     box-shadow: 0 8px 30px rgba(143,123,255,0.4); border: 2px solid #343860;
   }
   #incoming .avatar img { width: 100%; height: 100%; object-fit: cover; }
+  #incoming .roleBadge {
+    position: absolute; bottom: 4px; right: 4px; background: #1e2138; border: 2px solid #343860;
+    border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center;
+    justify-content: center; font-size: 15px; z-index: 2;
+  }
   #incoming h2 { font-weight: 600; font-size: 22px; margin-bottom: 4px; }
   #incoming p { color: #9fa3c0; font-size: 14px; letter-spacing: 0.3px; }
   #logoutLink {
@@ -104,7 +113,6 @@
   .orb.speaking { animation: pulse 0.7s ease-in-out infinite alternate; }
   @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.12); } }
 
-  /* Interview room — distinct layout */
   #interviewCard {
     display: none; background: #1e2138; border: 1px solid #343860; border-radius: 16px;
     padding: 18px; margin-bottom: 18px; text-align: left; align-items: center; gap: 14px;
@@ -114,12 +122,15 @@
     width: 64px; height: 64px; border-radius: 12px; object-fit: cover; flex-shrink: 0;
     border: 2px solid #343860;
   }
-  #interviewCard .avatar-dot {
-    position: relative;
-  }
+  #interviewCard .avatar-dot { position: relative; }
   #interviewCard .avatar-dot .live-dot {
     position: absolute; bottom: 2px; right: 2px; width: 12px; height: 12px; border-radius: 50%;
     background: #4ade80; border: 2px solid #1e2138;
+  }
+  #interviewCard .avatar-dot .suit-badge {
+    position: absolute; top: -4px; right: -4px; background: #1e2138; border: 2px solid #343860;
+    border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center;
+    justify-content: center; font-size: 10px;
   }
   #interviewCard .info b { font-size: 15px; }
   #interviewCard .info div.role { color: #9fa3c0; font-size: 12.5px; margin-top: 2px; }
@@ -211,14 +222,20 @@
 <div id="modeSelect" class="screen">
   <h2>Choose your session</h2>
   <div class="mode-card" id="pickFriend">
-    <img src="https://i.pravatar.cc/100?img=47" alt="">
+    <span class="avatar-badge">
+      <img src="https://i.pravatar.cc/100?img=12" alt="" style="width:52px;height:52px;border-radius:50%;object-fit:cover;">
+      <span class="badge-icon">😎</span>
+    </span>
     <div>
       <b>🧑‍🤝‍🧑 Friend — Speaking Practice</b>
       <p>Casual conversation with live grammar corrections</p>
     </div>
   </div>
   <div class="mode-card" id="pickInterviewer">
-    <img src="https://i.pravatar.cc/100?img=33" alt="">
+    <span class="avatar-badge">
+      <img src="https://i.pravatar.cc/100?img=14" alt="" style="width:52px;height:52px;border-radius:50%;object-fit:cover;">
+      <span class="badge-icon">👔</span>
+    </span>
     <div style="flex:1">
       <b>🎤 Interviewer — Mock Interview</b>
       <p>Realistic interview Q&A, feedback given at the end</p>
@@ -239,7 +256,8 @@
 <div id="incoming" class="screen">
   <div class="avatar-wrap">
     <div class="ring"></div><div class="ring"></div>
-    <div class="avatar"><img id="incomingAvatar" src="https://i.pravatar.cc/200?img=47" alt=""></div>
+    <div class="avatar"><img id="incomingAvatar" src="https://i.pravatar.cc/200?img=12" alt=""></div>
+    <div class="roleBadge" id="incomingRoleBadge">😎</div>
   </div>
   <h2 id="incomingTitle">English Buddy</h2>
   <p id="incomingSub">Incoming call…</p>
@@ -253,13 +271,12 @@
   <div class="top" id="inCallTop">English Buddy</div>
   <div id="timer">00:00</div>
 
-  <!-- Friend mode: orb -->
   <div class="orb-wrap" id="orbWrap"><div class="orb" id="orb"></div></div>
 
-  <!-- Interview mode: interviewer card -->
   <div id="interviewCard">
     <div class="avatar-dot">
-      <img id="interviewerPhoto" src="https://i.pravatar.cc/120?img=33" alt="">
+      <img id="interviewerPhoto" src="https://i.pravatar.cc/120?img=14" alt="">
+      <div class="suit-badge">👔</div>
       <div class="live-dot"></div>
     </div>
     <div class="info">
@@ -317,6 +334,7 @@ let authMode = "login";
 let busy = false;
 let activeMode = "friend";
 let questionCount = 0;
+let currentAudio = null;
 
 function showScreen(el) {
   [authScreen, modeSelect, incoming, inCall, reportScreen].forEach(s => s.classList.remove("active"));
@@ -338,7 +356,8 @@ document.getElementById("pickFriend").addEventListener("click", async () => {
   activeMode = "friend";
   document.getElementById("incomingTitle").textContent = "English Buddy";
   document.getElementById("incomingSub").textContent = "Incoming call…";
-  document.getElementById("incomingAvatar").src = "https://i.pravatar.cc/200?img=47";
+  document.getElementById("incomingAvatar").src = "https://i.pravatar.cc/200?img=12";
+  document.getElementById("incomingRoleBadge").textContent = "😎";
   document.getElementById("inCallTop").textContent = "English Buddy";
   showScreen(incoming);
 });
@@ -365,7 +384,8 @@ function setupInterviewer(type, role) {
   activeMode = "interviewer";
   document.getElementById("incomingTitle").textContent = "Mock Interview";
   document.getElementById("incomingSub").textContent = `${type} interview — ${role}`;
-  document.getElementById("incomingAvatar").src = "https://i.pravatar.cc/200?img=33";
+  document.getElementById("incomingAvatar").src = "https://i.pravatar.cc/200?img=14";
+  document.getElementById("incomingRoleBadge").textContent = "👔";
   document.getElementById("inCallTop").textContent = "Mock Interview";
   document.getElementById("interviewerRole").textContent = `${type.charAt(0).toUpperCase()+type.slice(1)} interview — ${role}`;
 }
@@ -375,7 +395,8 @@ document.getElementById("switchFriendBtn").addEventListener("click", async () =>
   activeMode = "friend";
   document.getElementById("incomingTitle").textContent = "English Buddy";
   document.getElementById("incomingSub").textContent = "Incoming call…";
-  document.getElementById("incomingAvatar").src = "https://i.pravatar.cc/200?img=47";
+  document.getElementById("incomingAvatar").src = "https://i.pravatar.cc/200?img=12";
+  document.getElementById("incomingRoleBadge").textContent = "😎";
   document.getElementById("inCallTop").textContent = "English Buddy";
   sidebar.classList.remove("open");
   showScreen(incoming);
@@ -488,12 +509,16 @@ skipBtn.addEventListener("click", async () => {
     addLine("ai", "AI: " + data.reply);
     questionCount++; questionCounter.textContent = "Q" + (questionCount+1);
     await speak(data.reply);
-  } catch (e) { showBanner("Couldn't skip — try again."); resetTalkUI(); }
+  } catch (e) { showBanner("Couldn't skip — try again."); }
   skipBtn.disabled = false;
+  busy = false;
 });
 
+let handlingResult = false;
 if (recognition) {
   recognition.onresult = async (event) => {
+    if (handlingResult) return;
+    handlingResult = true;
     const said = event.results[0][0].transcript;
     status.textContent = "Thinking…";
     addLine("you", "You: " + said);
@@ -510,8 +535,9 @@ if (recognition) {
       showBanner("Couldn't get a reply. Check your connection and tap Talk to try again.");
       resetTalkUI();
     }
+    handlingResult = false;
   };
-  recognition.onerror = (e) => { showBanner("Didn't catch that (" + e.error + "). Tap Talk to try again."); resetTalkUI(); };
+  recognition.onerror = (e) => { showBanner("Didn't catch that (" + e.error + "). Tap Talk to try again."); resetTalkUI(); handlingResult = false; };
   recognition.onend = () => { if (status.textContent === "Listening…") resetTalkUI(); };
 }
 
@@ -522,8 +548,12 @@ function addLine(cls, text) {
 
 function speak(text) {
   return new Promise((resolve) => {
+    if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+    speechSynthesis.cancel();
+
     const clean = text.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, "");
     orb.classList.add("speaking"); status.textContent = "Speaking…";
+
     const fallbackToBrowserVoice = () => {
       try {
         const utterance = new SpeechSynthesisUtterance(clean);
@@ -533,7 +563,9 @@ function speak(text) {
         speechSynthesis.speak(utterance);
       } catch (e) { resetTalkUI(); resolve(); }
     };
+
     const safety = setTimeout(() => { resetTalkUI(); resolve(); }, 8000);
+
     fetch("/speak", { method:"POST", credentials:"include", headers:{"Content-Type":"application/json"}, body: JSON.stringify({text:clean}) })
       .then(async (res) => {
         if (!res.ok) throw new Error("tts_failed");
@@ -541,9 +573,10 @@ function speak(text) {
         if (!blob || blob.size < 100) throw new Error("empty_audio");
         const url = URL.createObjectURL(blob);
         const audio = new Audio(url);
-        audio.onended = () => { clearTimeout(safety); resetTalkUI(); resolve(); };
-        audio.onerror = () => { clearTimeout(safety); fallbackToBrowserVoice(); };
-        audio.play().catch(() => { clearTimeout(safety); fallbackToBrowserVoice(); });
+        currentAudio = audio;
+        audio.onended = () => { clearTimeout(safety); currentAudio = null; resetTalkUI(); resolve(); };
+        audio.onerror = () => { clearTimeout(safety); currentAudio = null; fallbackToBrowserVoice(); };
+        audio.play().catch(() => { clearTimeout(safety); currentAudio = null; fallbackToBrowserVoice(); });
       })
       .catch(() => { clearTimeout(safety); fallbackToBrowserVoice(); });
   });

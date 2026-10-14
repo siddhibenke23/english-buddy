@@ -35,7 +35,7 @@ app = FastAPI()
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"], allow_credentials=True)
 
 ELEVEN_KEY = os.getenv("ELEVENLABS_API_KEY")
-VOICE_ID = "21m00Tcm4TlvDq8ikWAM"
+VOICE_ID = "pNInz6obpgDQGcFmaJgB"  # "Adam" - included in ElevenLabs free tier
 
 FRIEND_SYSTEM = """You are a friendly English speaking partner for a learner.
 The learner's messages come from speech recognition, so they will have

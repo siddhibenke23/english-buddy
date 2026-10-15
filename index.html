@@ -1,0 +1,1607 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Buddy | Speaking Practice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #f4f7ff;
+  --panel: #ffffff;
+  --panel2: #f0f4ff;
+  --text: #202944;
+  --muted: #75809a;
+  --border: #e0e7f4;
+  --primary: #7665e8;
+  --primary2: #a276ed;
+  --shadow: 0 15px 45px rgba(49,65,110,.09);
+  --danger: #e74768;
+}
+body.dark {
+  --bg: #171a2b;
+  --panel: #22263b;
+  --panel2: #2b3049;
+  --text: #f3f4ff;
+  --muted: #a5acc7;
+  --border: #393f5b;
+  --primary: #9584ff;
+  --primary2: #c184f5;
+  --shadow: 0 15px 45px rgba(0,0,0,.2);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; min-height: 100vh; font-family: Poppins,sans-serif;
+  background: var(--bg); color: var(--text);
+  transition: background .25s,color .25s;
+}
+button,input,select { font: inherit; }
+button { cursor: pointer; }
+button:disabled { opacity: .55; cursor: not-allowed; }
+.topbar {
+  height: 76px; display: flex; align-items: center; justify-content: space-between;
+  padding: 0 26px; background: var(--panel); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 20;
+}
+.brand { display: flex; align-items: center; gap: 11px; font-weight: 700; font-size: 19px; }
+.brand-icon {
+  width: 42px; height: 42px; display: grid; place-items: center; color: white;
+  background: linear-gradient(135deg,var(--primary),var(--primary2));
+  border-radius: 14px; box-shadow: 0 6px 18px rgba(118,101,232,.25);
+}
+.top-actions { display: flex; align-items: center; gap: 10px; }
+.btn {
+  border: 0; border-radius: 12px; padding: 11px 16px; color: white;
+  background: linear-gradient(135deg,var(--primary),var(--primary2));
+  font-weight: 600; transition: transform .15s,opacity .15s;
+}
+.btn:hover { transform: translateY(-1px); }
+.btn.secondary { background: var(--panel2); color: var(--text); border: 1px solid var(--border); }
+.btn.danger { background: linear-gradient(135deg,#ff7188,#df365b); box-shadow: 0 6px 18px rgba(223,54,91,.2); }
+.btn.full { width: 100%; }
+.layout { display: grid; grid-template-columns: 245px minmax(0,1fr); min-height: calc(100vh - 76px); }
+.sidebar { padding: 22px 16px; background: var(--panel); border-right: 1px solid var(--border); }
+.side-label {
+  margin: 18px 10px 9px; font-size: 11px; font-weight: 700;
+  letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted);
+}
+.side-label:first-child { margin-top: 0; }
+.side-btn {
+  display: block; width: 100%; text-align: left; border: 1px solid transparent;
+  background: transparent; color: var(--text); border-radius: 11px;
+  padding: 12px; margin-bottom: 5px; font-size: 13px;
+}
+.side-btn:hover,.side-btn.active { background: var(--panel2); border-color: var(--border); }
+.side-btn span { margin-right: 8px; }
+.sidebar select,.sidebar input {
+  width: 100%; padding: 11px; margin-bottom: 9px; border: 1px solid var(--border);
+  background: var(--panel2); color: var(--text); border-radius: 10px; outline: none;
+}
+.main { padding: 36px 24px; display: flex; justify-content: center; align-items: flex-start; }
+.screen { display: none; width: 100%; max-width: 760px; animation: appear .25s ease; }
+.screen.active { display: block; }
+@keyframes appear { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
+.card {
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: 22px; padding: 28px; box-shadow: var(--shadow);
+}
+.center { text-align: center; }
+h1,h2,h3,p { margin-top: 0; }
+h1 { font-size: 28px; margin-bottom: 8px; }
+h2 { font-size: 23px; margin-bottom: 8px; }
+h3 { font-size: 16px; }
+.muted { color: var(--muted); }
+.small { font-size: 13px; }
+.form-input {
+  width: 100%; padding: 14px 15px; margin: 7px 0; color: var(--text);
+  background: var(--panel2); border: 1px solid var(--border);
+  border-radius: 12px; outline: none;
+}
+.form-input:focus { border-color: var(--primary); }
+.error { color: #e74768; font-size: 13px; min-height: 20px; margin: 7px 0; }
+.auth-card { max-width: 450px; margin: 30px auto; }
+.auth-logo { font-size: 38px; margin-bottom: 10px; }
+.mode-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 18px; margin-top: 26px; }
+.mode-card {
+  text-align: left; border: 1px solid var(--border); background: var(--panel);
+  color: var(--text); border-radius: 20px; padding: 20px; transition: .2s;
+}
+.mode-card:hover { transform: translateY(-3px); border-color: var(--primary); box-shadow: var(--shadow); }
+.mode-icon { font-size: 30px; margin-bottom: 14px; }
+.mode-card h3 { margin-bottom: 7px; }
+.mode-card p { font-size: 13px; color: var(--muted); line-height: 1.7; }
+.options { margin-top: 18px; text-align: left; display: none; }
+.options.show { display: block; }
+.person {
+  width: 145px; height: 145px; border-radius: 50%; object-fit: cover;
+  border: 5px solid var(--panel); box-shadow: 0 10px 35px rgba(118,101,232,.22);
+}
+.incoming-person { margin: 16px auto 22px; }
+.ringing { width: 175px; height: 175px; margin: 10px auto 20px; display: grid; place-items: center; position: relative; }
+.ringing::before,.ringing::after {
+  content: ""; position: absolute; inset: 0; border: 2px solid var(--primary);
+  border-radius: 50%; animation: ring 2s infinite;
+}
+.ringing::after { animation-delay: 1s; }
+@keyframes ring { from { transform: scale(.8); opacity: .7; } to { transform: scale(1.35); opacity: 0; } }
+.call-buttons { display: flex; justify-content: center; gap: 28px; margin-top: 30px; }
+.round-btn { width: 62px; height: 62px; border: 0; border-radius: 50%; color: white; font-size: 23px; }
+.accept { background: #24b875; }
+.decline { background: #ed4c66; }
+.interviewer-card {
+  display: none; text-align: left; align-items: center; gap: 14px; margin-bottom: 22px;
+  padding: 14px; border-radius: 16px; background: var(--panel); border: 1px solid var(--border);
+}
+.interviewer-card.show { display: flex; }
+.interviewer-card img { width: 65px; height: 65px; border-radius: 13px; object-fit: cover; }
+#questionCounter { margin-left: auto; background: var(--panel2); border-radius: 20px; padding: 7px 12px; font-size: 12px; white-space: nowrap; }
+.timer { color: var(--muted); margin: 8px 0 22px; }
+.orb {
+  width: 125px; height: 125px; border-radius: 50%; margin: 0 auto 22px;
+  background: linear-gradient(135deg,#8d7aff,#ed8fd7); box-shadow: 0 0 45px rgba(118,101,232,.22);
+}
+.orb.speaking { animation: pulse .6s infinite alternate; }
+@keyframes pulse { to { transform: scale(1.08); } }
+#transcript { text-align: left; max-height: 300px; overflow-y: auto; margin: 20px 0; }
+#transcript p { line-height: 1.65; font-size: 14px; padding: 12px 14px; border-radius: 12px; margin: 9px 0; overflow-wrap: anywhere; }
+#transcript .you { background: #e8f4ff; color: #215f8e; }
+body.dark #transcript .you { background: #263c54; color: #bce2ff; }
+#transcript .ai { background: var(--panel2); color: var(--text); }
+#transcript .correction { background: #fff4d7; color: #815e10; font-size: 13px; }
+body.dark #transcript .correction { background: #463b27; color: #ffe4a0; }
+.call-actions { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+#status { color: var(--muted); font-size: 13px; margin: 12px 0; }
+#banner { display: none; color: #d53c59; font-size: 13px; margin: 12px 0; }
+.report-score { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; margin: 22px 0; }
+.score { padding: 16px 8px; border: 1px solid var(--border); background: var(--panel2); border-radius: 14px; }
+.score strong { display: block; font-size: 23px; color: var(--primary); }
+.score span { font-size: 11px; color: var(--muted); }
+.report-section { text-align: left; margin-top: 22px; }
+.report-section li { margin: 7px 0; font-size: 13px; line-height: 1.6; }
+#reportBody .row { display: flex; justify-content: space-between; gap: 15px; border-bottom: 1px solid var(--border); padding: 10px 0; font-size: 13px; }
+#reportBody .row span:first-child { color: var(--muted); }
+.report-actions { display: flex; gap: 10px; margin-top: 22px; }
+.report-actions button { flex: 1; }
+.footer-note { font-size: 12px; color: var(--muted); margin-top: 22px; }
+/* English Buddy video-call style */
+#inCall .card {
+  width: 100%;
+  max-width: 850px;
+  padding: 28px;
+  border-radius: 24px;
+}
+
+#inCall .call-stage {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+
+#inCall .video-tile {
+  position: relative;
+  min-height: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--panel2);
+  padding: 22px 12px;
+}
+
+#inCall .video-avatar {
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 65px;
+  background: linear-gradient(135deg, #8d7aff, #ed8fd7);
+}
+
+#inCall .user-avatar {
+  background: linear-gradient(135deg, #71c7ec, #7e9cff);
+}
+
+#inCall .video-name {
+  margin-top: 16px;
+  font-weight: 600;
+}
+
+#inCall .video-caption {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+#inCall .video-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 6px 10px;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.55);
+  color: white;
+  font-size: 11px;
+}
+
+#inCall .call-toolbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+#inCall .call-control {
+  min-width: 105px;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--panel2);
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+}
+
+#inCall .call-control.end-call {
+  background: #d9435b;
+  color: white;
+  border-color: #d9435b;
+}
+
+@media (max-width: 600px) {
+  #inCall .card {
+    padding: 18px 12px;
+  }
+
+  #inCall .call-stage {
+    grid-template-columns: 1fr;
+  }
+
+  #inCall .video-tile {
+    min-height: 210px;
+  }
+
+  #inCall .video-avatar {
+    width: 100px;
+    height: 100px;
+  }
+}
+/* English Buddy video-call style */
+#inCall .card {
+  width: 100%;
+  max-width: 850px;
+  padding: 28px;
+  border-radius: 24px;
+}
+
+#inCall .call-stage {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+
+#inCall .video-tile {
+  position: relative;
+  min-height: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--panel2);
+  padding: 22px 12px;
+}
+
+#inCall .video-avatar {
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 65px;
+  background: linear-gradient(135deg, #8d7aff, #ed8fd7);
+  box-shadow: 0 8px 35px rgba(118, 101, 232, 0.22);
+}
+
+#inCall .user-avatar {
+  background: linear-gradient(135deg, #71c7ec, #7e9cff);
+}
+
+#inCall .video-name {
+  margin-top: 16px;
+  font-weight: 600;
+}
+
+#inCall .video-caption {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+#inCall .video-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 6px 10px;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.55);
+  color: white;
+  font-size: 11px;
+}
+
+#inCall .video-speaking {
+  animation: callPulse 1s infinite alternate;
+}
+
+@keyframes callPulse {
+  from { box-shadow: 0 0 0 0 rgba(141, 122, 255, 0.15); }
+  to { box-shadow: 0 0 0 10px rgba(141, 122, 255, 0.30); }
+}
+
+#inCall .call-toolbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+#inCall .call-control {
+  min-width: 105px;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--panel2);
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+}
+
+#inCall .call-control:hover {
+  filter: brightness(0.96);
+}
+
+#inCall .call-control.end-call {
+  background: #d9435b;
+  color: white;
+  border-color: #d9435b;
+}
+
+@media (max-width: 600px) {
+  #inCall .card { padding: 18px 12px; }
+  #inCall .call-stage { grid-template-columns: 1fr; }
+  #inCall .video-tile { min-height: 210px; }
+  #inCall .video-avatar { width: 100px; height: 100px; }
+}
+
+/* Practice schedule styles */
+.schedule-panel {
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: 16px; padding: 20px; margin-top: 18px;
+}
+.schedule-panel h3 { margin-bottom: 14px; }
+.schedule-panel label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 7px; }
+.schedule-status { font-size: 12px; color: var(--muted); margin: 12px 0 0; line-height: 1.6; }
+.schedule-note { font-size: 11px; line-height: 1.7; color: var(--muted); margin-top: 18px; }
+.schedule-progress { margin-top: 18px; }
+.progress-track { height: 8px; border-radius: 10px; overflow: hidden; background: var(--border); margin-top: 10px; }
+.progress-fill { height: 100%; width: 0; background: linear-gradient(135deg,var(--primary),var(--primary2)); transition: width .2s; }
+.schedule-list { display: grid; gap: 10px; margin-top: 14px; }
+.schedule-item {
+  display: flex; align-items: center; gap: 12px; padding: 14px;
+  background: var(--panel2); border: 1px solid var(--border); border-radius: 12px;
+}
+.schedule-item.completed { opacity: .65; }
+.schedule-item.completed .schedule-title { text-decoration: line-through; }
+.schedule-details { flex: 1; min-width: 0; }
+.schedule-title { font-weight: 600; overflow-wrap: anywhere; }
+.schedule-meta { font-size: 12px; color: var(--muted); margin-top: 5px; line-height: 1.6; }
+.schedule-item-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.schedule-item-actions button {
+  padding: 7px 10px; border: 1px solid var(--border); background: var(--panel);
+  color: var(--text); border-radius: 9px; font-size: 12px;
+}
+.schedule-item-actions .delete-schedule { color: var(--danger); }
+.schedule-empty { padding: 25px 10px; text-align: center; color: var(--muted); background: var(--panel2); border-radius: 12px; }
+.schedule-form { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.schedule-form .full-row { grid-column: 1 / -1; }
+.schedule-form .form-input { margin: 0 0 8px; }
+
+@media (max-width: 850px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar {
+    position: fixed; z-index: 30; left: -280px; top: 76px; bottom: 0; width: 260px;
+    overflow-y: auto; transition: left .2s; box-shadow: var(--shadow);
+  }
+  .sidebar.open { left: 0; }
+  .main { padding: 25px 14px; }
+}
+@media (min-width: 851px) {
+  .sidebar { position: sticky; top: 76px; height: calc(100vh - 76px); overflow-y: auto; }
+  #menuToggle { display: none; }
+}
+@media (max-width: 540px) {
+  .topbar { padding: 0 13px; height: 68px; }
+  .brand { font-size: 16px; }
+  .brand-icon { width: 36px; height: 36px; }
+  .top-actions { gap: 6px; }
+  .top-actions .btn { padding: 9px; font-size: 12px; }
+  .sidebar { top: 68px; }
+  .mode-grid { grid-template-columns: 1fr; }
+  .card { padding: 20px 15px; }
+  h1 { font-size: 23px; }
+  .report-score { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .schedule-form { grid-template-columns: 1fr; }
+  .schedule-form .full-row { grid-column: auto; }
+  .schedule-item { align-items: flex-start; flex-wrap: wrap; }
+  .schedule-item-actions { width: 100%; }
+}
+</style>
+</head>
+
+<body>
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-icon">🎙️</div>
+    <span>English Buddy</span>
+  </div>
+  <div class="top-actions">
+    <button class="btn secondary" id="themeToggle">🌙 Dark</button>
+    <button class="btn danger" id="logoutButton" style="display:none">↪ Log out</button>
+    <button class="btn secondary" id="menuToggle" aria-label="Open menu">☰</button>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="side-label">Navigation</div>
+    <button class="side-btn active" id="homeNav"><span>🏠</span> Home</button>
+    <button class="side-btn" id="friendNav"><span>💬</span> Friend practice</button>
+    <button class="side-btn" id="interviewNav"><span>🎤</span> Mock interview</button>
+    <button class="side-btn" id="scheduleNav" style="display:none"><span>🗓️</span> Practice schedule</button>
+
+    <div class="side-label">Interview settings</div>
+    <label class="small muted" for="sideInterviewType">Interview style</label>
+    <select id="sideInterviewType">
+      <option value="formal">Formal</option>
+      <option value="informal">Informal</option>
+      <option value="communication">Communication-focused</option>
+      <option value="technical">Technical</option>
+    </select>
+    <label class="small muted" for="sideRole">Target role</label>
+    <input id="sideRole" placeholder="e.g. Data Analyst">
+    <button class="btn full" id="applyInterviewBtn">Start interview</button>
+
+    <div class="side-label">Session</div>
+    <button class="side-btn" id="exportBtn"><span>📄</span> Export report PDF</button>
+    <p class="footer-note">Practice a little every day. Confidence grows with consistency.</p>
+  </aside>
+
+  <main class="main">
+    <section class="screen active" id="auth">
+      <div class="card auth-card center">
+        <div class="auth-logo">👋</div>
+        <h1 id="authTitle">Welcome back!</h1>
+        <p class="muted small" id="authSub">Log in to continue your speaking practice.</p>
+        <input class="form-input" type="email" id="authEmail" placeholder="Email address" autocomplete="email">
+        <input class="form-input" type="password" id="authPassword" placeholder="Password" autocomplete="current-password">
+        <div class="error" id="authError"></div>
+        <button class="btn full" id="authSubmit">Log in</button>
+        <p class="muted small" style="margin-top:18px">
+          <span id="authToggleText">New to English Buddy?</span>
+          <a href="#" id="authToggleLink" style="color:var(--primary);font-weight:600"> Create account</a>
+        </p>
+      </div>
+    </section>
+
+    <section class="screen" id="modeSelect">
+      <div class="center">
+        <p class="muted small">YOUR PERSONAL SPEAKING PARTNER</p>
+        <h1>What would you like to practice?</h1>
+        <p class="muted">Choose a session and start speaking with confidence.</p>
+      </div>
+      <div class="mode-grid">
+        <button class="mode-card" id="pickFriend">
+          <div class="mode-icon">💬</div>
+          <h3>Friend mode</h3>
+          <p>Have a relaxed conversation. Get gentle grammar corrections and practice everyday English.</p>
+          <strong>Start conversation →</strong>
+        </button>
+        <div class="mode-card" id="interviewCardChoice">
+          <div class="mode-icon">
+            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop&crop=faces"
+              alt="Professional male interviewer" style="width:66px;height:66px;object-fit:cover;border-radius:18px">
+          </div>
+          <h3>Professional interviewer</h3>
+          <p>Practice job interviews with a professional interviewer and receive feedback at the end.</p>
+          <div class="options show" id="interviewOptions">
+            <label class="small muted" for="mInterviewType">Interview style</label>
+            <select class="form-input" id="mInterviewType">
+              <option value="formal">Formal</option>
+              <option value="informal">Informal</option>
+              <option value="communication">Communication-focused</option>
+              <option value="technical">Technical</option>
+            </select>
+            <label class="small muted" for="mRole">Target role</label>
+            <input class="form-input" id="mRole" placeholder="e.g. Software Engineer">
+            <button class="btn full" id="startInterviewBtn">Start mock interview</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen center" id="incoming">
+      <div class="card">
+        <p class="muted small">YOUR SESSION IS READY</p>
+        <div class="ringing">
+          <img class="person incoming-person" id="incomingAvatar"
+            src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop&crop=faces"
+            alt="Professional male interviewer">
+        </div>
+        <h2 id="incomingTitle">Professional Interviewer</h2>
+        <p class="muted" id="incomingSub">Your English practice session is ready.</p>
+        <div class="call-buttons">
+          <button class="round-btn decline" id="decline" title="Cancel session">✕</button>
+          <button class="round-btn accept" id="accept" title="Start session">☎</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen center" id="inCall">
+      <div class="card">
+        <p class="muted small" id="inCallTop">ENGLISH BUDDY</p>
+        <h2>Speaking session</h2>
+        <div class="timer" id="timer">00:00</div>
+<div class="call-stage">
+
+  <!-- AI participant -->
+  <div class="video-tile" id="aiVideoTile">
+    <div class="video-badge">AI PARTICIPANT</div>
+
+    <!-- Friend Practice avatar -->
+    <div id="orbWrap">
+      <div class="orb" id="orb"></div>
+    </div>
+
+    <!-- Existing Mock Interview participant -->
+    <div class="interviewer-card" id="interviewerCard">
+      <img id="interviewerPhoto"
+        src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop&crop=faces"
+        alt="Professional male interviewer">
+      <div>
+        <strong>Professional Interviewer</strong>
+        <div class="muted small" id="interviewerRole">Mock interview</div>
+      </div>
+      <div id="questionCounter">Q1</div>
+    </div>
+
+    <div class="video-name" id="aiTileName">English Buddy</div>
+    <div class="video-caption" id="aiTileCaption">Your conversation partner</div>
+  </div>
+
+  <!-- User participant -->
+  <div class="video-tile" id="userVideoTile">
+    <div class="video-badge">YOU</div>
+    <div class="video-avatar user-avatar">🙂</div>
+    <div class="video-name">You</div>
+    <div class="video-caption">Your practice session</div>
+  </div>
+
+</div>
+
+        <div id="banner"></div>
+        <p id="status">Press Talk and speak when you're ready.</p>
+        <div id="transcript"></div>
+        <div class="call-actions">
+          <button class="btn" id="talkBtn">🎤 Talk</button>
+          <button class="btn secondary" id="skipBtn" style="display:none">⏭ Skip question</button>
+        </div>
+        <button class="btn danger" id="hangup" style="margin-top:20px">End session</button>
+      </div>
+    </section>
+
+    <!-- Practice schedule screen -->
+    <section class="screen" id="scheduleScreen">
+      <div class="card">
+        <div class="center">
+          <div style="font-size:36px">🗓️</div>
+          <h1>Practice Schedule</h1>
+          <p class="muted">Build a regular English-speaking habit.</p>
+        </div>
+
+        <div class="schedule-panel">
+          <h3>📅 Regular daily reminder</h3>
+          <label for="dailyTime">Practice time every day</label>
+          <input class="form-input" id="dailyTime" type="time" value="19:00">
+          <button class="btn full" id="saveScheduleBtn">Save daily time</button>
+          <p id="scheduleStatus" class="schedule-status"></p>
+        </div>
+
+        <div class="schedule-panel">
+          <h3>⏰ Today's reminder</h3>
+          <label for="todayTime">Change today's reminder time only</label>
+          <input class="form-input" id="todayTime" type="time" value="19:00">
+          <button class="btn full" id="rescheduleTodayBtn">Reschedule today</button>
+          <button class="btn secondary full" id="snoozeBtn" style="margin-top:9px">Snooze 15 minutes</button>
+          <button class="btn secondary full" id="skipTodayBtn" style="margin-top:9px">Skip today</button>
+          <p id="todayStatus" class="schedule-status"></p>
+        </div>
+
+        <div class="schedule-panel">
+          <h3>🔔 Notifications</h3>
+          <p class="muted small">Allow browser notifications to receive a reminder when the scheduled time arrives.</p>
+          <button class="btn full" id="testNotificationBtn">Enable / test notifications</button>
+          <p class="schedule-note">
+            Important: reminders run while this app is open. If the browser is closed or your computer is asleep, a reminder may not appear. Notifications generally require localhost or HTTPS and browser permission.
+          </p>
+        </div>
+
+        <div class="schedule-panel">
+          <h3>📌 Weekly practice sessions</h3>
+          <p class="muted small">Add sessions to organize your speaking, vocabulary, grammar, and interview practice.</p>
+
+          <form id="scheduleForm" class="schedule-form">
+            <div class="full-row">
+              <label for="sessionTitle">Session name</label>
+              <input class="form-input" id="sessionTitle" maxlength="80" placeholder="e.g. Daily English conversation" required>
+            </div>
+            <div>
+              <label for="sessionDay">Day</label>
+              <select class="form-input" id="sessionDay" required>
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+                <option value="Saturday">Saturday</option>
+                <option value="Sunday">Sunday</option>
+              </select>
+            </div>
+            <div>
+              <label for="sessionTime">Time</label>
+<select class="form-input" id="sessionTime" required>
+  <option value="08:00">8:00 AM</option>
+  <option value="09:00">9:00 AM</option>
+  <option value="10:00">10:00 AM</option>
+  <option value="11:00">11:00 AM</option>
+  <option value="12:00">12:00 PM</option>
+  <option value="13:00">1:00 PM</option>
+  <option value="14:00">2:00 PM</option>
+  <option value="15:00">3:00 PM</option>
+  <option value="16:00">4:00 PM</option>
+  <option value="17:00">5:00 PM</option>
+  <option value="18:00">6:00 PM</option>
+  <option value="19:00" selected>7:00 PM</option>
+  <option value="20:00">8:00 PM</option>
+  <option value="21:00">9:00 PM</option>
+</select>
+            </div>
+            <div class="full-row">
+              <label for="sessionType">Practice type</label>
+              <select class="form-input" id="sessionType" required>
+                <option value="Speaking practice">Speaking practice</option>
+                <option value="Friend practice">Friend practice</option>
+                <option value="Mock interview">Mock interview</option>
+                <option value="Vocabulary practice">Vocabulary practice</option>
+                <option value="Grammar practice">Grammar practice</option>
+              </select>
+            </div>
+            <div class="full-row">
+              <button class="btn full" type="submit">＋ Add session</button>
+            </div>
+          </form>
+
+          <div class="schedule-progress">
+            <strong id="scheduleProgressText">0 of 0 sessions completed</strong>
+            <div class="progress-track">
+              <div class="progress-fill" id="scheduleProgressFill"></div>
+            </div>
+          </div>
+          <div class="schedule-list" id="scheduleList"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen" id="report">
+      <div class="card">
+        <div class="center">
+          <div style="font-size:34px">📊</div>
+          <h1>Your session report</h1>
+          <p class="muted">Review your performance and keep improving.</p>
+        </div>
+        <div id="reportBody"></div>
+        <div class="report-actions">
+          <button class="btn" id="exportFromReport">📄 Export PDF</button>
+          <button class="btn secondary" id="newCall">New session</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+const sidebar = $("sidebar");
+const authScreen = $("auth");
+const modeSelect = $("modeSelect");
+const incoming = $("incoming");
+const inCall = $("inCall");
+const reportScreen = $("report");
+const scheduleScreen = $("scheduleScreen");
+
+let authMode = "login";
+let activeMode = "friend";
+let seconds = 0;
+let timerInterval = null;
+let questionCount = 0;
+let busy = false;
+let handlingResult = false;
+let currentAudio = null;
+let lastReport = null;
+let lastReportRaw = null;
+
+function showScreen(screen) {
+  [authScreen, modeSelect, incoming, inCall, reportScreen, scheduleScreen]
+    .forEach(s => s.classList.remove("active"));
+  screen.classList.add("active");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function showBanner(message) {
+  $("banner").textContent = message;
+  $("banner").style.display = "block";
+}
+function clearBanner() {
+  $("banner").style.display = "none";
+  $("banner").textContent = "";
+}
+
+function setLoggedIn(isLoggedIn) {
+  $("logoutButton").style.display = isLoggedIn ? "inline-block" : "none";
+  $("homeNav").style.display = isLoggedIn ? "block" : "none";
+  $("friendNav").style.display = isLoggedIn ? "block" : "none";
+  $("interviewNav").style.display = isLoggedIn ? "block" : "none";
+  $("scheduleNav").style.display = isLoggedIn ? "block" : "none";
+}
+function closeSidebar() {
+  sidebar.classList.remove("open");
+}
+$("menuToggle").addEventListener("click", () => sidebar.classList.toggle("open"));
+
+/* Theme setting */
+function applyTheme(theme) {
+  document.body.classList.toggle("dark", theme === "dark");
+  $("themeToggle").textContent = theme === "dark" ? "☀️ Light" : "🌙 Dark";
+}
+let savedTheme = "light";
+try { savedTheme = localStorage.getItem("englishBuddyTheme") || "light"; } catch (e) {}
+applyTheme(savedTheme);
+
+$("themeToggle").addEventListener("click", () => {
+  const next = document.body.classList.contains("dark") ? "light" : "dark";
+  applyTheme(next);
+  try { localStorage.setItem("englishBuddyTheme", next); } catch (e) {}
+});
+
+/* Navigation */
+$("homeNav").addEventListener("click", () => {
+  closeSidebar();
+  showScreen(modeSelect);
+});
+$("friendNav").addEventListener("click", () => startMode("friend"));
+$("interviewNav").addEventListener("click", () => {
+  $("interviewOptions").classList.add("show");
+  $("mInterviewType").value = $("sideInterviewType").value;
+  $("mRole").value = $("sideRole").value;
+  closeSidebar();
+  showScreen(modeSelect);
+  $("interviewOptions").scrollIntoView({ behavior: "smooth", block: "center" });
+});
+$("scheduleNav").addEventListener("click", () => {
+  closeSidebar();
+  loadSchedule();
+  renderSchedule();
+  showScreen(scheduleScreen);
+});
+$("interviewCardChoice").addEventListener("click", e => {
+  if (e.target.closest("input,select,button")) return;
+  $("interviewOptions").classList.add("show");
+});
+
+async function postJSON(url, data) {
+  const response = await fetch(url, {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  });
+  let body = {};
+  try { body = await response.json(); } catch (e) {}
+  if (!response.ok) throw new Error(body.detail || "Request failed. Please try again.");
+  return body;
+}
+
+/* Login / signup */
+$("authToggleLink").addEventListener("click", e => {
+  e.preventDefault();
+  authMode = authMode === "login" ? "signup" : "login";
+  $("authTitle").textContent = authMode === "login" ? "Welcome back!" : "Create your account";
+  $("authSub").textContent = authMode === "login"
+    ? "Log in to continue your speaking practice."
+    : "Create an account to start practicing.";
+  $("authSubmit").textContent = authMode === "login" ? "Log in" : "Create account";
+  $("authToggleText").textContent = authMode === "login"
+    ? "New to English Buddy?" : "Already have an account?";
+  $("authToggleLink").textContent = authMode === "login" ? " Create account" : " Log in";
+  $("authError").textContent = "";
+  $("authPassword").value = "";
+  $("authPassword").autocomplete = authMode === "login" ? "current-password" : "new-password";
+});
+$("authSubmit").addEventListener("click", authenticate);
+$("authPassword").addEventListener("keydown", e => {
+  if (e.key === "Enter") authenticate();
+});
+
+async function authenticate() {
+  const email = $("authEmail").value.trim();
+  const password = $("authPassword").value;
+  $("authError").textContent = "";
+  if (!email || !password) {
+    $("authError").textContent = "Please enter both your email and password.";
+    return;
+  }
+  if (authMode === "signup" && password.length < 8) {
+    $("authError").textContent = "Use a password with at least 8 characters.";
+    return;
+  }
+  $("authSubmit").disabled = true;
+  $("authSubmit").textContent = "Please wait…";
+  try {
+    const endpoint = authMode === "login" ? "/login" : "/signup";
+    await postJSON(endpoint, { email, password });
+    setLoggedIn(true);
+    $("authPassword").value = "";
+    showScreen(modeSelect);
+  } catch (error) {
+    $("authError").textContent = error.message || "Could not connect to the server.";
+  } finally {
+    $("authSubmit").disabled = false;
+    $("authSubmit").textContent = authMode === "login" ? "Log in" : "Create account";
+  }
+}
+
+async function checkLoggedIn() {
+  try {
+    const response = await fetch("/me", { credentials: "include" });
+    const data = await response.json();
+    setLoggedIn(Boolean(data.logged_in));
+    showScreen(data.logged_in ? modeSelect : authScreen);
+  } catch (e) {
+    setLoggedIn(false);
+    showScreen(authScreen);
+  }
+}
+
+$("logoutButton").addEventListener("click", async () => {
+  if (!confirm("Are you sure you want to log out?")) return;
+  try {
+    const response = await fetch("/logout", { method: "POST", credentials: "include" });
+    if (!response.ok) throw new Error("Logout failed");
+    clearInterval(timerInterval);
+    window.speechSynthesis?.cancel();
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio = null;
+    }
+    setLoggedIn(false);
+    closeSidebar();
+    $("authEmail").value = "";
+    $("authPassword").value = "";
+    $("authError").textContent = "";
+    showScreen(authScreen);
+  } catch (e) {
+    alert("Could not log out. Please check your connection and try again.");
+  }
+});
+
+/* Start a practice session */
+$("pickFriend").addEventListener("click", () => startMode("friend"));
+$("startInterviewBtn").addEventListener("click", e => {
+  e.stopPropagation();
+  startMode("interviewer", $("mInterviewType").value, $("mRole").value.trim() || "the position");
+});
+$("applyInterviewBtn").addEventListener("click", () => {
+  startMode("interviewer", $("sideInterviewType").value, $("sideRole").value.trim() || "the position");
+});
+
+async function startMode(mode, interviewType = "formal", role = "the position") {
+  try {
+    await postJSON("/start", { mode, interview_type: interviewType, role });
+    activeMode = mode;
+    $("incomingTitle").textContent = mode === "interviewer" ? "Professional Interviewer" : "English Buddy";
+    $("incomingSub").textContent = mode === "interviewer"
+      ? `${interviewType} interview · ${role}`
+      : "Your friendly English speaking partner is ready.";
+    const professionalPhoto = "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop&crop=faces";
+    $("incomingAvatar").src = mode === "interviewer" ? professionalPhoto : "https://i.pravatar.cc/200?img=12";
+    $("inCallTop").textContent = mode === "interviewer" ? "MOCK INTERVIEW" : "ENGLISH BUDDY";
+    $("interviewerRole").textContent = `${interviewType} interview · ${role}`;
+    closeSidebar();
+    showScreen(incoming);
+  } catch (error) {
+    alert(error.message || "Could not start the session. Please log in again.");
+  }
+}
+
+$("accept").addEventListener("click", startCall);
+$("decline").addEventListener("click", () => showScreen(modeSelect));
+$("hangup").addEventListener("click", showReport);
+$("newCall").addEventListener("click", () => showScreen(modeSelect));
+
+function startCall() {
+  showScreen(inCall);
+  seconds = 0;
+  questionCount = 0;
+  busy = false;
+  handlingResult = false;
+  $("timer").textContent = "00:00";
+  $("transcript").innerHTML = "";
+  $("questionCounter").textContent = "Q1";
+  $("talkBtn").disabled = false;
+  $("skipBtn").disabled = false;
+  clearBanner();
+  $("orbWrap").style.display = activeMode === "interviewer" ? "none" : "block";
+  $("interviewerCard").classList.toggle("show", activeMode === "interviewer");
+  $("skipBtn").style.display = activeMode === "interviewer" ? "inline-block" : "none";
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    seconds++;
+    const minutes = String(Math.floor(seconds / 60)).padStart(2, "0");
+    const secs = String(seconds % 60).padStart(2, "0");
+    $("timer").textContent = `${minutes}:${secs}`;
+  }, 1000);
+  $("status").textContent = "Press Talk and speak when you're ready.";
+}
+
+/* Browser speech recognition */
+const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition = null;
+if (SpeechRecognitionAPI) {
+  recognition = new SpeechRecognitionAPI();
+  recognition.lang = "en-US";
+  recognition.interimResults = false;
+  recognition.continuous = false;
+} else {
+  showBanner("Speech recognition is not supported in this browser. Please use Google Chrome.");
+}
+
+$("talkBtn").addEventListener("click", () => {
+  if (busy || !recognition) {
+    if (!recognition) showBanner("Please open this app in Google Chrome to use voice input.");
+    return;
+  }
+  clearBanner();
+  busy = true;
+  $("talkBtn").disabled = true;
+  $("status").textContent = "Listening…";
+  try {
+    recognition.start();
+  } catch (error) {
+    busy = false;
+    $("talkBtn").disabled = false;
+    showBanner("Microphone could not start. Tap Talk again.");
+  }
+});
+
+if (recognition) {
+  recognition.onresult = async event => {
+    if (handlingResult) return;
+    handlingResult = true;
+    const spokenText = event.results[0][0].transcript;
+    addLine("you", "You: " + spokenText);
+    $("status").textContent = "Thinking…";
+    try {
+      const data = await postJSON("/chat", { text: spokenText });
+      const parts = String(data.reply || "").split("Correction:");
+      addLine("ai", "AI: " + parts[0].trim());
+      if (parts[1]) addLine("correction", "✏ Correction: " + parts[1].trim());
+      if (activeMode === "interviewer") {
+        questionCount++;
+        $("questionCounter").textContent = "Q" + (questionCount + 1);
+      }
+      await speak(parts[0].trim());
+    } catch (error) {
+      showBanner("Could not get an AI reply. Check your internet connection and try again.");
+      resetTalkUI();
+    } finally {
+      handlingResult = false;
+      busy = false;
+      $("talkBtn").disabled = false;
+    }
+  };
+  recognition.onerror = event => {
+    showBanner("Microphone issue: " + event.error + ". Please tap Talk and try again.");
+    resetTalkUI();
+    busy = false;
+    handlingResult = false;
+  };
+  recognition.onend = () => {
+    if (busy && !handlingResult) {
+      busy = false;
+      $("talkBtn").disabled = false;
+      $("status").textContent = "Press Talk when you're ready.";
+    }
+  };
+}
+
+function addLine(className, text) {
+  const p = document.createElement("p");
+  p.className = className;
+  p.textContent = text;
+  $("transcript").appendChild(p);
+  $("transcript").scrollTop = $("transcript").scrollHeight;
+}
+function resetTalkUI() {
+  $("orb").classList.remove("speaking");
+  $("status").textContent = "Press Talk when you're ready.";
+  $("talkBtn").disabled = false;
+}
+
+async function speak(text) {
+  if (!text) {
+    resetTalkUI();
+    return;
+  }
+  const clean = text.replace(/[*#_`]/g, "").trim();
+  $("orb").classList.add("speaking");
+  $("status").textContent = "Speaking…";
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio = null;
+  }
+  if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+
+  try {
+    const response = await fetch("/speak", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: clean })
+    });
+    if (!response.ok) throw new Error("Voice service unavailable");
+    const blob = await response.blob();
+    if (!blob || blob.size < 100) throw new Error("Empty audio");
+    const url = URL.createObjectURL(blob);
+    const audio = new Audio(url);
+    currentAudio = audio;
+    await new Promise((resolve, reject) => {
+      audio.onended = resolve;
+      audio.onerror = reject;
+      audio.play().catch(reject);
+    });
+    URL.revokeObjectURL(url);
+    currentAudio = null;
+    resetTalkUI();
+    return;
+  } catch (error) {
+    currentAudio = null;
+  }
+
+  if ("speechSynthesis" in window) {
+    await new Promise(resolve => {
+      const utterance = new SpeechSynthesisUtterance(clean);
+      utterance.lang = "en-US";
+      utterance.rate = .95;
+      utterance.onend = resolve;
+      utterance.onerror = resolve;
+      window.speechSynthesis.speak(utterance);
+    });
+  }
+  resetTalkUI();
+}
+
+/* Skip interview question */
+$("skipBtn").addEventListener("click", async () => {
+  if (busy) return;
+  busy = true;
+  $("skipBtn").disabled = true;
+  $("status").textContent = "Getting the next question…";
+  addLine("you", "You: (skipped this question)");
+  try {
+    const data = await postJSON("/chat", {
+      text: "I would like to skip this question. Please ask me the next question."
+    });
+    addLine("ai", "AI: " + data.reply);
+    questionCount++;
+    $("questionCounter").textContent = "Q" + (questionCount + 1);
+    await speak(data.reply);
+  } catch (error) {
+    showBanner("Could not skip the question. Please try again.");
+  } finally {
+    busy = false;
+    $("skipBtn").disabled = false;
+    $("talkBtn").disabled = false;
+  }
+});
+
+/* Session report */
+async function showReport() {
+  clearInterval(timerInterval);
+  if (recognition) {
+    try { recognition.stop(); } catch (e) {}
+  }
+  if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio = null;
+  }
+  showScreen(reportScreen);
+  $("reportBody").innerHTML = '<p class="muted center">Preparing your report…</p>';
+  try {
+    const response = await fetch("/report", { credentials: "include" });
+    if (!response.ok) throw new Error("Could not generate report");
+    const data = await response.json();
+    lastReportRaw = data.raw;
+    lastReport = typeof data.raw === "string" ? JSON.parse(data.raw) : data.raw;
+    renderReport(lastReport);
+  } catch (error) {
+    $("reportBody").innerHTML = '<p class="error">Could not generate your report. Please check your connection and try again.</p>';
+  }
+}
+
+function renderReport(r) {
+  const scores = [
+    ["Grammar",r.grammar],["Vocabulary",r.vocabulary],
+    ["Answer relevance",r.answer_relevance],["Sentence quality",r.sentence_quality],
+    ["Clarity",r.clarity],["Keyword usage",r.keyword_usage]
+  ];
+  const scoreHTML = scores.map(([label,value]) => `
+    <div class="score"><strong>${escapeHTML(value ?? 0)}/10</strong><span>${escapeHTML(label)}</span></div>
+  `).join("");
+  const listHTML = (items,emptyMessage) => {
+    const safeItems = Array.isArray(items) ? items : [];
+    if (!safeItems.length) return `<li>${escapeHTML(emptyMessage)}</li>`;
+    return safeItems.map(item => `<li>${escapeHTML(item)}</li>`).join("");
+  };
+  const nlp = r.nlp_metrics || {};
+  $("reportBody").innerHTML = `
+    <div class="report-score">${scoreHTML}</div>
+    <div class="report-section">
+      <div class="row"><span>Overall score</span><strong>${escapeHTML(r.overall ?? 0)}/10</strong></div>
+      <div class="row"><span>Sentiment</span><strong>${escapeHTML(r.sentiment || "Neutral")}</strong></div>
+    </div>
+    <div class="report-section"><h3>✅ Your strengths</h3><ul>${listHTML(r.strengths,"Keep practicing to identify your strengths.")}</ul></div>
+    <div class="report-section"><h3>🎯 Areas to improve</h3><ul>${listHTML(r.improvements,"Continue practicing to improve further.")}</ul></div>
+    <div class="report-section"><h3>✏ Grammar corrections</h3><ul>${listHTML(r.grammar_mistakes,"No major grammar mistakes were listed.")}</ul></div>
+    <div class="report-section">
+      <h3>📚 Speaking and language metrics</h3>
+      <div class="row"><span>Total words</span><strong>${escapeHTML(nlp.total_words ?? 0)}</strong></div>
+      <div class="row"><span>Unique words</span><strong>${escapeHTML(nlp.unique_words ?? 0)}</strong></div>
+      <div class="row"><span>Vocabulary diversity</span><strong>${escapeHTML(nlp.type_token_ratio ?? 0)}</strong></div>
+      <div class="row"><span>Average sentence length</span><strong>${escapeHTML(nlp.avg_sentence_length ?? 0)} words</strong></div>
+      <div class="row"><span>Reading ease</span><strong>${escapeHTML(nlp.flesch_reading_ease ?? 0)}</strong></div>
+    </div>`;
+}
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;","<": "&lt;",">": "&gt;",'"': "&quot;","'": "&#39;"
+  })[char]);
+}
+
+async function exportCurrentReport() {
+  try {
+    if (!lastReport) {
+      const response = await fetch("/report", { credentials: "include" });
+      if (!response.ok) throw new Error("Could not generate report");
+      const data = await response.json();
+      lastReport = typeof data.raw === "string" ? JSON.parse(data.raw) : data.raw;
+    }
+    const response = await fetch("/export-pdf", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ report: lastReport })
+    });
+    if (!response.ok) throw new Error("Could not export PDF");
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "english_buddy_report.pdf";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  } catch (error) {
+    alert("Could not export the PDF. Finish a speaking session and try again.");
+  }
+}
+$("exportBtn").addEventListener("click", exportCurrentReport);
+$("exportFromReport").addEventListener("click", exportCurrentReport);
+
+/* ---------------------------------------------------
+   PRACTICE SCHEDULE AND DAILY REMINDERS
+   Settings and sessions are stored in this browser.
+--------------------------------------------------- */
+const scheduleStorageKey = "englishBuddySchedule";
+const todayOverrideKey = "englishBuddyTodayOverride";
+const skippedDateKey = "englishBuddySkippedDate";
+const sessionsStorageKey = "englishBuddyWeeklySessions";
+
+let scheduleTimer = null;
+let reminderFiredFor = "";
+
+function localDateKey(date = new Date()) {
+  return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}-${String(date.getDate()).padStart(2,"0")}`;
+}
+
+function safeReadJSON(key, fallback) {
+  try {
+    const value = localStorage.getItem(key);
+    return value ? JSON.parse(value) : fallback;
+  } catch (e) {
+    return fallback;
+  }
+}
+
+function readSchedule() {
+  const result = safeReadJSON(scheduleStorageKey, { dailyTime: "19:00" });
+  return result && typeof result === "object" ? result : { dailyTime: "19:00" };
+}
+
+function getTodayOverride() {
+  try {
+    const value = localStorage.getItem(todayOverrideKey);
+    return value && value.startsWith(localDateKey() + "|")
+      ? value.split("|")[1] : "";
+  } catch (e) {
+    return "";
+  }
+}
+
+function loadSchedule() {
+  const schedule = readSchedule();
+  $("dailyTime").value = schedule.dailyTime || "19:00";
+  $("todayTime").value = getTodayOverride() || schedule.dailyTime || "19:00";
+  updateScheduleStatus();
+}
+
+function updateScheduleStatus() {
+  const schedule = readSchedule();
+  const override = getTodayOverride();
+  let skipped = false;
+  try {
+    skipped = localStorage.getItem(skippedDateKey) === localDateKey();
+  } catch (e) {}
+
+  $("scheduleStatus").textContent =
+  "Your regular daily practice time is " +
+  new Date("2000-01-01T" + (schedule.dailyTime || "19:00") + ":00")
+    .toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true
+    }) + ".";
+
+  $("todayStatus").textContent = skipped
+    ? "Today's reminder has been skipped. Your regular reminder remains saved for tomorrow."
+    : override
+      ? "Today's reminder is set for " + override + ". Your regular daily time is unchanged."
+      : "Today's reminder follows your regular time: " + (schedule.dailyTime || "19:00") + ".";
+}
+
+function scheduleNextReminder() {
+  clearTimeout(scheduleTimer);
+  scheduleTimer = null;
+
+  const now = new Date();
+  const today = localDateKey(now);
+  let skipped = false;
+  try {
+    skipped = localStorage.getItem(skippedDateKey) === today;
+  } catch (e) {}
+  if (skipped) return;
+
+  const schedule = readSchedule();
+  const override = getTodayOverride();
+  const time = override || schedule.dailyTime || "19:00";
+  const [hours, minutes] = time.split(":").map(Number);
+
+  const target = new Date(now);
+  target.setHours(hours, minutes, 0, 0);
+
+  if (target <= now) {
+    target.setDate(target.getDate() + 1);
+    const [nextHours, nextMinutes] = (schedule.dailyTime || "19:00").split(":").map(Number);
+    target.setHours(nextHours, nextMinutes, 0, 0);
+  }
+
+  const delay = Math.max(1000, target.getTime() - now.getTime());
+
+  scheduleTimer = setTimeout(() => {
+    const firedDate = localDateKey();
+    if (reminderFiredFor !== firedDate) {
+      reminderFiredFor = firedDate;
+
+      if ("Notification" in window && Notification.permission === "granted") {
+        try {
+          const notification = new Notification("English Buddy 🎙️", {
+            body: "Time for your English speaking practice! Open English Buddy to begin.",
+            tag: "english-buddy-practice"
+          });
+          notification.onclick = () => {
+            window.focus();
+            notification.close();
+            loadSchedule();
+            renderSchedule();
+            showScreen(scheduleScreen);
+          };
+        } catch (e) {
+          alert("English Buddy: Time for your speaking practice!");
+        }
+      } else {
+        alert("English Buddy: Time for your speaking practice! Open the app and start a session.");
+      }
+    }
+    scheduleNextReminder();
+  }, delay);
+}
+
+$("saveScheduleBtn").addEventListener("click", async () => {
+  const time = $("dailyTime").value;
+  if (!time) {
+    alert("Please choose a daily practice time.");
+    return;
+  }
+  try {
+    localStorage.setItem(scheduleStorageKey, JSON.stringify({ dailyTime: time }));
+    localStorage.removeItem(todayOverrideKey);
+    localStorage.removeItem(skippedDateKey);
+  } catch (e) {
+    alert("Could not save the schedule. Check your browser storage settings.");
+    return;
+  }
+
+  if ("Notification" in window && Notification.permission === "default") {
+    try { await Notification.requestPermission(); } catch (e) {}
+  }
+  loadSchedule();
+  scheduleNextReminder();
+  alert("Your regular daily practice time has been saved.");
+});
+
+$("rescheduleTodayBtn").addEventListener("click", () => {
+  const time = $("todayTime").value;
+  if (!time) {
+    alert("Please choose today's new time.");
+    return;
+  }
+  try {
+    localStorage.setItem(todayOverrideKey, localDateKey() + "|" + time);
+    localStorage.removeItem(skippedDateKey);
+  } catch (e) {
+    alert("Could not save today's reminder.");
+    return;
+  }
+  reminderFiredFor = "";
+  loadSchedule();
+  scheduleNextReminder();
+  alert("Today's reminder has been rescheduled. Your regular daily time is unchanged.");
+});
+
+$("snoozeBtn").addEventListener("click", () => {
+  const later = new Date(Date.now() + 15 * 60 * 1000);
+  if (localDateKey(later) !== localDateKey()) {
+    alert("Snooze would go past midnight. Please choose a time for tomorrow instead.");
+    return;
+  }
+  const time = String(later.getHours()).padStart(2,"0") + ":" +
+    String(later.getMinutes()).padStart(2,"0");
+  try {
+    localStorage.setItem(todayOverrideKey, localDateKey() + "|" + time);
+    localStorage.removeItem(skippedDateKey);
+  } catch (e) {
+    alert("Could not save the snooze time.");
+    return;
+  }
+  reminderFiredFor = "";
+  loadSchedule();
+  scheduleNextReminder();
+  alert("Your reminder has been snoozed for 15 minutes.");
+});
+
+$("skipTodayBtn").addEventListener("click", () => {
+  try {
+    localStorage.setItem(skippedDateKey, localDateKey());
+  } catch (e) {
+    alert("Could not save this setting.");
+    return;
+  }
+  clearTimeout(scheduleTimer);
+  scheduleTimer = null;
+  updateScheduleStatus();
+  alert("Today's reminder has been skipped. Tomorrow's regular reminder remains saved.");
+});
+
+$("testNotificationBtn").addEventListener("click", async () => {
+  if (!("Notification" in window)) {
+    alert("This browser does not support notifications. In-page reminders may still work while the app is open.");
+    return;
+  }
+  if (Notification.permission === "default") {
+    try { await Notification.requestPermission(); } catch (e) {}
+  }
+  if (Notification.permission === "granted") {
+    try {
+      const notification = new Notification("English Buddy 🎙️", {
+        body: "Your test notification is working!"
+      });
+      notification.onclick = () => {
+        window.focus();
+        notification.close();
+      };
+    } catch (e) {
+      alert("The browser could not display a notification. Try running the app on localhost or HTTPS.");
+    }
+  } else {
+    alert("Notifications are blocked. Allow notifications in your browser settings and try again.");
+  }
+});
+
+/* Weekly practice sessions */
+function readSessions() {
+  const sessions = safeReadJSON(sessionsStorageKey, []);
+  return Array.isArray(sessions) ? sessions.filter(s =>
+    s && typeof s.id === "string" && typeof s.title === "string"
+  ) : [];
+}
+
+let practiceSessions = readSessions();
+
+function saveSessions() {
+  try {
+    localStorage.setItem(sessionsStorageKey, JSON.stringify(practiceSessions));
+    return true;
+  } catch (e) {
+    alert("Could not save your weekly sessions in this browser.");
+    return false;
+  }
+}
+
+function renderSchedule() {
+  const list = $("scheduleList");
+  const total = practiceSessions.length;
+  const completed = practiceSessions.filter(s => s.completed).length;
+
+  $("scheduleProgressText").textContent = `${completed} of ${total} sessions completed`;
+  $("scheduleProgressFill").style.width = total ? `${completed / total * 100}%` : "0%";
+
+  if (!total) {
+    list.innerHTML = `
+      <div class="schedule-empty">
+        <div style="font-size:30px;margin-bottom:8px">🗓️</div>
+        <strong>No sessions added yet</strong>
+        <p class="small">Add your first practice session above.</p>
+      </div>`;
+    return;
+  }
+
+  const dayOrder = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+  const sorted = [...practiceSessions].sort((a,b) => {
+    const difference = dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day);
+    return difference || String(a.time).localeCompare(String(b.time));
+  });
+
+  list.replaceChildren();
+
+  sorted.forEach(session => {
+    const item = document.createElement("div");
+    item.className = "schedule-item";
+    if (session.completed) item.classList.add("completed");
+
+    const details = document.createElement("div");
+    details.className = "schedule-details";
+
+    const title = document.createElement("div");
+    title.className = "schedule-title";
+    title.textContent = session.title;
+
+    const meta = document.createElement("div");
+    meta.className = "schedule-meta";
+    let formattedTime = session.time;
+    if (session.time) {
+      const [h,m] = session.time.split(":").map(Number);
+      const date = new Date();
+      date.setHours(h,m,0,0);
+      formattedTime = date.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+    }
+    meta.textContent = `${session.day} · ${formattedTime} · ${session.type}`;
+    details.append(title,meta);
+
+    const actions = document.createElement("div");
+    actions.className = "schedule-item-actions";
+
+    const completeButton = document.createElement("button");
+    completeButton.type = "button";
+    completeButton.textContent = session.completed ? "↩ Undo" : "✓ Complete";
+    completeButton.addEventListener("click", () => {
+      practiceSessions = practiceSessions.map(s =>
+        s.id === session.id ? { ...s, completed: !s.completed } : s
+      );
+      if (saveSessions()) renderSchedule();
+    });
+
+    const deleteButton = document.createElement("button");
+    deleteButton.type = "button";
+    deleteButton.className = "delete-schedule";
+    deleteButton.textContent = "Delete";
+    deleteButton.addEventListener("click", () => {
+      if (!confirm(`Delete "${session.title}" from your weekly plan?`)) return;
+      const previous = practiceSessions;
+      practiceSessions = practiceSessions.filter(s => s.id !== session.id);
+      if (saveSessions()) renderSchedule();
+      else practiceSessions = previous;
+    });
+
+    actions.append(completeButton,deleteButton);
+    item.append(details,actions);
+    list.appendChild(item);
+  });
+}
+
+$("scheduleForm").addEventListener("submit", event => {
+  event.preventDefault();
+  const title = $("sessionTitle").value.trim();
+  const day = $("sessionDay").value;
+  const time = $("sessionTime").value;
+  const type = $("sessionType").value;
+
+  if (!title || !day || !time || !type) {
+    alert("Please fill in all session fields.");
+    return;
+  }
+
+  practiceSessions.push({
+    id: `${Date.now()}-${Math.random().toString(36).slice(2,8)}`,
+    title,day,time,type,completed:false
+  });
+
+  if (!saveSessions()) {
+    practiceSessions.pop();
+    return;
+  }
+
+  $("sessionTitle").value = "";
+  renderSchedule();
+});
+
+/* Keep reminders scheduled when the app returns to focus. */
+window.addEventListener("focus", () => {
+  scheduleNextReminder();
+});
+
+/* Start the app */
+loadSchedule();
+renderSchedule();
+scheduleNextReminder();
+checkLoggedIn();
+</script>
+</body>
+</html>
